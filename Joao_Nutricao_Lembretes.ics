@@ -1,0 +1,134 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+PRODID:-//BLUE ON Operator M45//Nutrition PT//EN
+X-WR-CALNAME:João — Nutrição e Suplementação
+X-WR-TIMEZONE:Europe/Lisbon
+BEGIN:VTIMEZONE
+TZID:Europe/Lisbon
+X-LIC-LOCATION:Europe/Lisbon
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0000
+TZOFFSETTO:+0100
+TZNAME:WEST
+DTSTART:19700329T010000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0000
+TZNAME:WET
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:blueon-nutrition-0535@operator-m45
+DTSTART;TZID=Europe/Lisbon:20260726T053500
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+SUMMARY:Pré-treino — banana + whey + água
+DESCRIPTION:Banana + 20 g de whey + água. Confirmar tolerância e hidratação antes do treino.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Pré-treino — banana + 20 g de whey + água
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:blueon-nutrition-0730@operator-m45
+DTSTART;TZID=Europe/Lisbon:20260726T073000
+RRULE:FREQ=DAILY
+SUMMARY:Pequeno-almoço / pós-treino
+DESCRIPTION:Nos dias de treino: refeição pós-treino completa. Nos dias de descanso: ajustar hidratos à atividade.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Pequeno-almoço / pós-treino
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:blueon-nutrition-1030@operator-m45
+DTSTART;TZID=Europe/Lisbon:20260726T103000
+RRULE:FREQ=DAILY
+SUMMARY:Lanche da manhã
+DESCRIPTION:Proteína + hidratos + fruta. Evitar chegar ao almoço com fome excessiva.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Lanche da manhã
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:blueon-nutrition-1200@operator-m45
+DTSTART;TZID=Europe/Lisbon:20260726T120000
+RRULE:FREQ=DAILY
+SUMMARY:Controlo de água — 1,2 L
+DESCRIPTION:Confirmar pelo menos 1,2 L de água acumulados.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Controlo de água — 1,2 L
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:blueon-nutrition-1400@operator-m45
+DTSTART;TZID=Europe/Lisbon:20260726T140000
+RRULE:FREQ=DAILY
+SUMMARY:Creatina + ómega-3
+DESCRIPTION:Creatina monohidratada 5 g + ómega-3 com a refeição.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Creatina 5 g + ómega-3
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:blueon-nutrition-1530@operator-m45
+DTSTART;TZID=Europe/Lisbon:20260726T153000
+RRULE:FREQ=DAILY
+SUMMARY:Lanche da tarde
+DESCRIPTION:Garantir proteína e energia suficiente para evitar quebra ao final do dia.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Lanche da tarde
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:blueon-nutrition-1800@operator-m45
+DTSTART;TZID=Europe/Lisbon:20260726T180000
+RRULE:FREQ=DAILY
+SUMMARY:Controlo de água — 2,2 L
+DESCRIPTION:Confirmar pelo menos 2,2 L de água acumulados.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Controlo de água — 2,2 L
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:blueon-nutrition-2030@operator-m45
+DTSTART;TZID=Europe/Lisbon:20260726T203000
+RRULE:FREQ=DAILY
+SUMMARY:ZMB6
+DESCRIPTION:Tomar ZMB6 de acordo com o rótulo e tolerância individual.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:ZMB6
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:blueon-nutrition-2145@operator-m45
+DTSTART;TZID=Europe/Lisbon:20260726T214500
+RRULE:FREQ=DAILY
+SUMMARY:Ceia + preparar o dia seguinte
+DESCRIPTION:Completar proteína/energia do dia e preparar refeição, shaker, água e suplementos para amanhã.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Ceia + preparar o dia seguinte
+END:VALARM
+END:VEVENT
+END:VCALENDAR
