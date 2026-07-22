@@ -25,8 +25,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Send scheduled reminder
+      - name: Send Telegram message
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python scripts/telegram_reminders.py
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python scripts/telegram_reminders.py --test
+          else
+            python scripts/telegram_reminders.py
+          fi
