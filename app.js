@@ -16,7 +16,7 @@ const phases=[
 {n:'Performance competitiva',w:'35–44',goal:'Pacing, eficiência e resistência específica.'},
 {n:'Peak e taper',w:'45–52',goal:'Consolidar performance e reduzir fadiga.'}
 ];
-const defaults={version:3,onboarded:false,week:1,raceDate:'',sessions:[],recovery:[],assessments:[{date:'01/08/2025',weight:74.3,fat:11.3,waist:'',vo2:32.23}],nutrition:[],water:0,supplements:{},completed:{}};
+const defaults={version:4,onboarded:false,week:1,raceDate:'',sessions:[],recovery:[],assessments:[{date:'01/08/2025',weight:74.3,fat:11.3,waist:'',vo2:32.23}],nutrition:[],water:0,supplements:{},completed:{}};
 let S=Object.assign({},defaults,JSON.parse(localStorage.getItem('blueonM45v3')||'{}'));
 const save=()=>localStorage.setItem('blueonM45v3',JSON.stringify(S));
 const todayIndex=()=>{const d=new Date().getDay();return d===0?6:d-1};
@@ -25,14 +25,14 @@ const today=()=>new Date().toLocaleDateString('pt-PT');
 function readiness(){if(!S.recovery.length)return null;const x=S.recovery.at(-1);return Math.round((x.sleep+x.energy+(11-x.soreness)+(11-x.stress))/40*100)}
 function go(id){document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo({top:0,behavior:'smooth'})}
 function render(){const wi=todayIndex(),wo=workouts[wi],p=phases[phaseIndex(S.week)],r=readiness();
-profileName.textContent=PROFILE.name;profileInitials.textContent='JP';hello.textContent=`Olá, João.`;goalText.textContent=PROFILE.goal;phaseTag.textContent=p.n;weekTag.textContent=`Semana ${S.week}/52`;nextWorkout.textContent=wo.t;nextWorkoutMeta.textContent=`${wo.d} · ${wo.f}`;readyScore.textContent=r===null?'—':`${r}%`;readyBar.style.width=`${r||0}%`;readyAdvice.textContent=r===null?'Faz o check-in para calcular readiness.':r>=80?'Pronto para executar o plano.':r>=65?'Executa com controlo e respeita o RIR.':'Reduz volume acessório e protege a recuperação.';
+profileName.textContent=PROFILE.name;profileInitials.textContent='JP';hello.textContent=`Bom dia, João.`;goalText.textContent='O teu briefing diário de performance.';phaseTag.textContent=p.n;weekTag.textContent=`Semana ${S.week}/52`;nextWorkout.textContent=wo.t;nextWorkoutMeta.textContent=`${wo.d} · ${wo.f}`;readyScore.textContent=r===null?'—':`${r}%`;readyBar.style.width=`${r||0}%`;readyAdvice.textContent=r===null?'Faz o check-in para ativar a análise diária.':r>=80?'Condição favorável para executar o plano.':r>=65?'Mantém o plano com controlo de volume e RIR.':'Reduz volume acessório e protege a recuperação.';
 currentWeight.textContent=`${latestAssessment().weight} kg`;targetWeight.textContent=`${PROFILE.targetWeight} kg`;bodyFat.textContent=`${latestAssessment().fat||'—'}%`;vo2Metric.textContent=`${latestAssessment().vo2||'—'}`;
 weekView.innerHTML=workouts.map((x,i)=>`<div class="day ${i===wi?'today':''}"><strong>${x.d.slice(0,3)}</strong><small>${x.t}</small></div>`).join('');
 sessionTitle.textContent=wo.t;sessionFocus.textContent=wo.f;exerciseList.innerHTML=wo.ex.map((x,i)=>`<div class="item"><label class="check"><input type="checkbox" ${S.completed[`${today()}-${i}`]?'checked':''} data-ex="${i}"><span>${x}</span></label></div>`).join('');
 renderHistory();renderRecovery();renderAssessments();renderNutrition();renderProfile();renderPhases();renderTodayPlan();weekInput.value=S.week;raceDate.value=S.raceDate||'';
 }
 function latestAssessment(){return S.assessments.at(-1)||defaults.assessments[0]}
-function renderTodayPlan(){const items=[...PROFILE.telegramSchedule];todayPlan.innerHTML=items.map(x=>`<div class="item"><span>${x}</span></div>`).join('')}
+function renderTodayPlan(){todayPlan.innerHTML=PROFILE.telegramSchedule.map(x=>`<div class="item"><span>${x}</span></div>`).join('')}
 function renderHistory(){historyList.innerHTML=S.sessions.length?S.sessions.slice(-8).reverse().map(x=>`<div class="item"><div class="split"><strong>${x.title}</strong><span class="tag">RPE ${x.rpe}</span></div><small class="muted">${x.date} · ${x.minutes} min</small><p>${x.notes||'Sem notas.'}</p></div>`).join(''):'<p class="muted">Ainda não existem sessões registadas.</p>'}
 function renderRecovery(){const r=readiness();recoveryHeadline.textContent=r===null?'Sem registo':r>=80?'Estado favorável':r>=65?'Estado moderado':'Fadiga elevada';recoveryText.textContent=r===null?'Regista sono, energia, dor e stress.':r>=80?'Mantém o plano previsto e respeita RIR/RPE.':r>=65?'Mantém os exercícios principais e controla o volume.':'Reduz acessórios e intensidade metabólica.';recoveryHistory.innerHTML=S.recovery.slice(-7).reverse().map(x=>`<div class="item"><strong>${x.date}</strong> · Sono ${x.sleep}/10 · Energia ${x.energy}/10 · Dor ${x.soreness}/10 · Stress ${x.stress}/10</div>`).join('')}
 function renderAssessments(){assessmentList.innerHTML=S.assessments.slice().reverse().map(x=>`<div class="item"><div class="split"><strong>${x.date}</strong><span class="tag">${x.weight} kg</span></div><small class="muted">Gordura ${x.fat||'—'}% · Cintura ${x.waist||'—'} cm · VO₂ ${x.vo2||'—'}</small></div>`).join('')}
@@ -54,4 +54,24 @@ resetData.onclick=()=>{if(confirm('Apagar os dados e repor o perfil inicial?')){
 startApp.onclick=()=>{S.onboarded=true;save();onboarding.classList.remove('show')};
 if(!S.onboarded)onboarding.classList.add('show');
 let deferredPrompt;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;installBtn.hidden=false});installBtn.onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.hidden=true}};
-if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');render();
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+
+function installBlueAI(){
+ const logo=document.querySelector('.logo');if(logo){logo.innerHTML='<img src="assets/blue-on-m45-logo.svg" alt="BLUE ON M45" style="width:100%;height:100%;object-fit:contain;border-radius:50%">'}
+ const dock=document.createElement('div');dock.className='ai-dock';dock.innerHTML='<div class="ai-core" aria-hidden="true"></div><input id="blueAiInput" aria-label="Pedir à BLUE AI" placeholder="Pede à BLUE AI: abre o treino, mostra recuperação, tenho 35 minutos…"><button id="blueAiSend">Executar</button>';
+ const response=document.createElement('div');response.className='ai-response';response.id='blueAiResponse';document.body.append(response,dock);
+ const input=dock.querySelector('input'),send=dock.querySelector('button');
+ const show=(html)=>{response.innerHTML=html;response.classList.add('show');clearTimeout(show.t);show.t=setTimeout(()=>response.classList.remove('show'),7000)};
+ function run(){const raw=input.value.trim();if(!raw)return;const q=raw.toLowerCase();let page=null,msg='';
+  if(q.includes('dashboard')||q.includes('hoje')||q.includes('resumo')){page='dashboard';msg='<strong>Dashboard aberto.</strong><br><span class="muted">Aqui tens o briefing diário, readiness, treino e estado físico.</span>'}
+  else if(q.includes('treino')||q.includes('sessão')){page='treino';msg='<strong>Treino aberto.</strong><br><span class="muted">Sessão de hoje preparada com carga, RIR, duração e registo.</span>'}
+  else if(q.includes('nutri')||q.includes('água')||q.includes('refeição')||q.includes('suplement')){page='nutricao';msg='<strong>Nutrição aberta.</strong><br><span class="muted">Podes registar água, refeições e suplementação.</span>'}
+  else if(q.includes('recovery')||q.includes('recuper')||q.includes('sono')||q.includes('cansado')||q.includes('dor')){page='recovery';const r=readiness();msg=`<strong>Recovery aberto.</strong><br><span class="muted">${r===null?'Faz o check-in para eu calcular o teu estado.':`Readiness atual: ${r}%. ${r>=80?'Mantém o plano.':r>=65?'Controla o volume.':'Reduz acessórios e intensidade metabólica.'}`}</span>`}
+  else if(q.includes('avalia')||q.includes('peso')||q.includes('gordura')||q.includes('vo2')){page='avaliacoes';msg='<strong>Avaliações abertas.</strong><br><span class="muted">Consulta composição corporal, peso, cintura e VO₂.</span>'}
+  else if(q.includes('35 minutos')||q.includes('35 min')){page='treino';msg='<strong>Treino otimizado para 35 minutos.</strong><br><span class="muted">Mantém os exercícios principais, reduz acessórios e usa descansos de 60–75 s.</span>'}
+  else{msg='<strong>Pedido recebido.</strong><br><span class="muted">Nesta primeira versão já consigo abrir módulos e interpretar pedidos básicos. A camada autónoma será ligada progressivamente aos teus dados e rotinas.</span>'}
+  if(page)go(page);show(msg);input.value='';
+ }
+ send.onclick=run;input.addEventListener('keydown',e=>{if(e.key==='Enter')run()});
+}
+render();installBlueAI();
