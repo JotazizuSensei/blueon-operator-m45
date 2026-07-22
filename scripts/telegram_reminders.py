@@ -43,6 +43,18 @@ def send_message(text: str) -> None:
 
 def main() -> int:
     now = datetime.now(ZoneInfo("Europe/Lisbon"))
+
+    if "--test" in sys.argv:
+        message = (
+            "<b>BLUE ON Operator M45</b>\n"
+            "<b>Teste Telegram concluído</b>\n\n"
+            f"Ligação ativa em {now.strftime('%d/%m/%Y às %H:%M')} · Europe/Lisbon.\n"
+            "Os lembretes de nutrição e suplementação estão configurados."
+        )
+        send_message(message)
+        print("Test message sent")
+        return 0
+
     current = now.strftime("%H:%M")
     item = SCHEDULE.get(current)
 
