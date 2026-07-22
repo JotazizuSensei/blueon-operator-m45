@@ -1,1 +1,309 @@
-<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#34451f"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css"><title>BLUE ON Operator M45</title></head><body><div class="app"><header class="top"><div class="brand"><div class="logo">M45</div><div>BLUE ON<small>OPERATOR M45 · JOÃO PEREIRA</small></div></div><div class="profile-chip"><span id="profileName">João Pereira</span><div class="avatar" id="profileInitials">JP</div><button class="btn" id="installBtn" hidden>Instalar</button></div></header><nav class="nav" id="nav"><button data-page="dashboard" class="active">Hoje</button><button data-page="perfil">Perfil</button><button data-page="treino">Treino</button><button data-page="nutricao">Nutrição</button><button data-page="recovery">Recovery</button><button data-page="avaliacoes">Avaliações</button><button data-page="macro">Planeamento</button><button data-page="dados">Dados</button></nav><main><section id="dashboard" class="page active"><div class="grid"><article class="card full hero"><div class="hero-top"><div><div class="eyebrow">O teu sistema diário</div><h1 id="hello">Olá, João.</h1><p class="muted" id="goalText"></p><div class="row"><span class="tag" id="phaseTag"></span><span class="tag" id="weekTag"></span><span class="tag">HYROX M45</span></div></div><button class="btn primary" data-go="perfil">Abrir perfil</button></div></article><article class="card"><div class="eyebrow">Readiness</div><div class="metric" id="readyScore">—</div><div class="bar"><span id="readyBar"></span></div><p class="muted" id="readyAdvice"></p><button class="btn" data-go="recovery">Fazer check-in</button></article><article class="card"><div class="eyebrow">Treino de hoje</div><h2 id="nextWorkout">—</h2><p class="muted" id="nextWorkoutMeta"></p><button class="btn primary" data-go="treino">Abrir sessão</button></article><article class="card"><div class="eyebrow">Estado físico</div><div class="kpis"><div class="kpi"><span class="muted">Peso</span><strong id="currentWeight">—</strong></div><div class="kpi"><span class="muted">Meta</span><strong id="targetWeight">—</strong></div><div class="kpi"><span class="muted">Gordura</span><strong id="bodyFat">—</strong></div><div class="kpi"><span class="muted">VO₂</span><strong id="vo2Metric">—</strong></div></div></article><article class="card wide"><div class="eyebrow">Semana atual</div><div class="week" id="weekView"></div></article><article class="card"><div class="eyebrow">Plano do dia</div><div class="list" id="todayPlan"></div></article></div></section><section id="perfil" class="page"><div class="grid"><article class="card full"><div class="eyebrow">Perfil pessoal</div><h2>João Pereira · Operator M45</h2><div id="profileDetails" class="list"></div></article></div></section><section id="treino" class="page"><div class="grid"><article class="card wide"><div class="split"><div><div class="eyebrow">Sessão do dia</div><h2 id="sessionTitle">—</h2><p class="muted" id="sessionFocus"></p></div><button class="btn primary" id="completeSession">Concluir</button></div><div class="list" id="exerciseList"></div></article><article class="card"><div class="eyebrow">Registo rápido</div><div class="field"><label>RPE</label><input id="sessionRpe" type="number" min="1" max="10" value="7"></div><div class="field"><label>Duração</label><input id="sessionMinutes" type="number" min="10" max="180" value="50"></div><div class="field"><label>Notas</label><textarea id="sessionNotes" rows="5"></textarea></div><button class="btn" id="saveSessionBtn">Guardar</button></article><article class="card full"><div class="eyebrow">Histórico</div><div id="historyList" class="list"></div></article></div></section><section id="nutricao" class="page"><div class="grid"><article class="card"><div class="eyebrow">Hidratação</div><div class="metric" id="waterMetric">0.0 L</div><div class="bar"><span id="waterBar"></span></div><div class="row"><button class="btn primary" id="addWater">+250 ml</button><button class="btn" id="resetWater">Repor</button></div></article><article class="card"><div class="eyebrow">Suplementação</div><div id="supplementList" class="list"></div></article><article class="card"><div class="eyebrow">Nova refeição</div><div class="field"><label>Refeição</label><input id="mealName" placeholder="Ex.: pequeno-almoço"></div><div class="field"><label>Notas</label><textarea id="mealNotes" rows="4"></textarea></div><button class="btn primary" id="addMeal">Registar</button></article><article class="card full"><div class="eyebrow">Registos recentes</div><div id="nutritionHistory" class="list"></div></article></div></section><section id="recovery" class="page"><div class="grid"><article class="card"><div class="eyebrow">Check-in diário</div><div class="field"><label>Sono</label><input id="sleep" type="range" min="1" max="10" value="7"></div><div class="field"><label>Energia</label><input id="energy" type="range" min="1" max="10" value="7"></div><div class="field"><label>Dor muscular</label><input id="soreness" type="range" min="1" max="10" value="4"></div><div class="field"><label>Stress</label><input id="stress" type="range" min="1" max="10" value="4"></div><button class="btn primary" id="saveRecovery">Guardar</button></article><article class="card wide"><div class="eyebrow">Interpretação</div><h2 id="recoveryHeadline"></h2><p class="muted" id="recoveryText"></p><div id="recoveryHistory" class="list"></div></article></div></section><section id="avaliacoes" class="page"><div class="grid"><article class="card"><div class="eyebrow">Nova avaliação</div><div class="field"><label>Peso</label><input id="weight" type="number" step="0.1" value="74.3"></div><div class="field"><label>Massa gorda (%)</label><input id="fat" type="number" step="0.1" value="11.3"></div><div class="field"><label>Cintura (cm)</label><input id="waist" type="number" step="0.1"></div><div class="field"><label>VO₂ estimado</label><input id="vo2" type="number" step="0.1" value="32.23"></div><button class="btn primary" id="saveAssessment">Guardar</button></article><article class="card wide"><div class="eyebrow">Evolução</div><div id="assessmentList" class="list"></div></article></div></section><section id="macro" class="page"><div class="grid"><article class="card full"><div class="eyebrow">Planeamento anual</div><h2>52 semanas · Hybrid / HYROX M45</h2><div id="phaseList" class="list"></div></article></div></section><section id="dados" class="page"><div class="grid"><article class="card"><div class="eyebrow">Configuração</div><div class="field"><label>Semana atual</label><input id="weekInput" type="number" min="1" max="52"></div><div class="field"><label>Data alvo</label><input id="raceDate" type="date"></div><button class="btn primary" id="saveConfig">Guardar</button></article><article class="card"><div class="eyebrow">Backup</div><div class="row"><button class="btn" id="exportData">Exportar</button><label class="btn">Importar<input id="importData" type="file" accept="application/json" hidden></label></div></article><article class="card"><div class="eyebrow">Repor</div><button class="btn" id="resetData">Repor aplicação</button></article></div></section></main><footer class="footer">BLUE ON Operator M45 · perfil pessoal de João Pereira</footer></div><div class="onboarding" id="onboarding"><div class="panel"><div class="eyebrow">Configuração concluída</div><h1>Esta aplicação já é tua.</h1><p class="muted">O perfil, objetivos, métricas iniciais, rotina de treino, suplementação e lembretes foram pré-configurados com os teus dados.</p><div class="steps"><div class="item"><strong>1. Hoje</strong><br><span class="muted">Resumo diário</span></div><div class="item"><strong>2. Regista</strong><br><span class="muted">Treino, nutrição e recovery</span></div><div class="item"><strong>3. Evolui</strong><br><span class="muted">A app acumula histórico</span></div></div><p class="notice">Não precisas testar tudo num dia. Usa normalmente; vamos validar e melhorar cada módulo à medida que o utilizas.</p><button class="btn primary" id="startApp">Entrar no meu perfil</button></div></div><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#02050a">
+  <meta name="description" content="BLUE ON Operator M45 — sistema pessoal de treino, nutrição, recuperação e evolução.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <title>BLUE ON Operator M45</title>
+</head>
+<body>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="Navegação principal">
+      <button class="brand" data-page="dashboard" aria-label="Abrir início">
+        <img src="assets/blue-on-m45-logo.svg" alt="BLUE ON M45">
+        <span><strong>BLUE ON</strong><small>OPERATOR M45</small></span>
+      </button>
+
+      <nav class="side-nav" id="sideNav">
+        <button class="nav-item active" data-page="dashboard"><span class="nav-icon">⌂</span><span>Dashboard</span></button>
+        <button class="nav-item" data-page="treino"><span class="nav-icon">↗</span><span>Treino</span></button>
+        <button class="nav-item" data-page="nutricao"><span class="nav-icon">◒</span><span>Nutrição</span></button>
+        <button class="nav-item" data-page="recovery"><span class="nav-icon">♡</span><span>Recovery</span></button>
+        <button class="nav-item" data-page="avaliacoes"><span class="nav-icon">⌁</span><span>Avaliações</span></button>
+        <button class="nav-item" data-page="planeamento"><span class="nav-icon">▦</span><span>Planeamento</span></button>
+        <button class="nav-item" data-page="dados"><span class="nav-icon">⚙</span><span>Dados</span></button>
+      </nav>
+
+      <div class="side-status">
+        <div class="status-dot"></div>
+        <div><strong>BLUE AI</strong><small>núcleo local ativo</small></div>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="overline" id="pageEyebrow">PERFORMANCE OPERATING SYSTEM</p>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="top-actions">
+          <div class="time-chip"><span id="liveTime">--:--</span><small id="liveDate">--</small></div>
+          <button class="icon-btn" id="installBtn" hidden aria-label="Instalar aplicação">↓</button>
+          <button class="profile-btn" data-page="dados" aria-label="Abrir definições"><span>JP</span></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section id="dashboard" class="page active" data-title="Dashboard" data-eyebrow="PERFORMANCE OPERATING SYSTEM">
+          <div class="hero-grid">
+            <article class="panel hero-panel">
+              <div class="hero-copy">
+                <p class="overline">BRIEFING DIÁRIO</p>
+                <h2 id="greeting">Bom dia, João.</h2>
+                <p class="hero-text" id="briefingText">A preparar a análise dos teus dados.</p>
+                <div class="hero-actions">
+                  <button class="btn primary" data-page="treino">Iniciar sessão</button>
+                  <button class="btn ghost" id="speakBriefing">Ouvir briefing</button>
+                </div>
+              </div>
+              <div class="readiness-orb" id="readinessOrb" style="--score:0deg">
+                <div class="orb-inner"><small>READINESS</small><strong id="readyScore">—</strong><span id="readyLabel">sem dados</span></div>
+              </div>
+            </article>
+
+            <article class="panel ai-summary">
+              <div class="panel-head"><div><p class="overline">BLUE AI</p><h3>Decisão do dia</h3></div><span class="live-pill">ATIVO</span></div>
+              <p id="aiDecision" class="decision-text">Faz o check-in de recovery para ativar recomendações autónomas.</p>
+              <div class="decision-meta">
+                <span id="decisionLoad">Carga: base</span>
+                <span id="decisionDuration">Duração: 50 min</span>
+              </div>
+              <button class="text-btn" id="askWhy">Porque esta decisão?</button>
+            </article>
+          </div>
+
+          <div class="metric-strip">
+            <article class="metric-card"><span>Sono</span><strong id="dashSleep">—</strong><small id="dashSleepState">sem registo</small></article>
+            <article class="metric-card"><span>Energia</span><strong id="dashEnergy">—</strong><small id="dashEnergyState">sem registo</small></article>
+            <article class="metric-card"><span>Água</span><strong id="dashWater">0,0 L</strong><small id="dashWaterState">meta 3,5 L</small></article>
+            <article class="metric-card"><span>Peso</span><strong id="dashWeight">74,3 kg</strong><small id="dashWeightState">meta 80 kg</small></article>
+            <article class="metric-card"><span>Semana</span><strong id="dashWeek">1/52</strong><small id="dashPhase">fundação</small></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel span-7">
+              <div class="panel-head"><div><p class="overline">HOJE</p><h3>Linha temporal inteligente</h3></div><button class="text-btn" id="addTimelineItem">Adicionar</button></div>
+              <div class="timeline" id="timeline"></div>
+            </article>
+
+            <article class="panel span-5 workout-preview">
+              <div class="panel-head"><div><p class="overline">SESSÃO DO DIA</p><h3 id="todayWorkoutTitle">—</h3></div><span class="tag" id="todayWorkoutTag">—</span></div>
+              <p class="muted" id="todayWorkoutFocus">—</p>
+              <div class="exercise-mini-list" id="todayExercises"></div>
+              <div class="session-footer"><span id="todayDuration">50 min</span><button class="btn primary compact" data-page="treino">Abrir treino</button></div>
+            </article>
+
+            <article class="panel span-7">
+              <div class="panel-head"><div><p class="overline">TENDÊNCIA</p><h3>Performance semanal</h3></div><span class="tag">7 DIAS</span></div>
+              <canvas id="performanceChart" height="220" aria-label="Gráfico de performance semanal"></canvas>
+              <div class="chart-legend"><span><i class="legend-blue"></i>Readiness</span><span><i class="legend-cyan"></i>Treinos</span></div>
+            </article>
+
+            <article class="panel span-5">
+              <div class="panel-head"><div><p class="overline">MEMÓRIA</p><h3>O que o sistema aprendeu</h3></div></div>
+              <div class="memory-list" id="memoryList"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="treino" class="page" data-title="Treino" data-eyebrow="SESSÃO, CARGA E PROGRESSÃO">
+          <div class="page-grid">
+            <article class="panel span-8 training-main">
+              <div class="panel-head"><div><p class="overline">SESSÃO ATUAL</p><h2 id="sessionTitle">—</h2><p class="muted" id="sessionFocus">—</p></div><div class="session-badges"><span class="tag" id="sessionWeek">SEMANA 1</span><span class="tag" id="sessionMode">NORMAL</span></div></div>
+              <div class="exercise-list" id="exerciseList"></div>
+              <div class="session-actions"><button class="btn ghost" id="saveSessionBtn">Guardar progresso</button><button class="btn primary" id="completeSession">Concluir sessão</button></div>
+            </article>
+
+            <aside class="panel span-4 sticky-panel">
+              <p class="overline">CONTROLO DA SESSÃO</p>
+              <div class="session-control-row"><span>Tempo estimado</span><strong id="estimatedTime">50 min</strong></div>
+              <div class="session-control-row"><span>Volume previsto</span><strong id="estimatedVolume">100%</strong></div>
+              <div class="field"><label for="sessionRpe">RPE final</label><input id="sessionRpe" type="range" min="1" max="10" value="7"><output id="sessionRpeOutput">7</output></div>
+              <div class="field"><label for="sessionNotes">Notas da sessão</label><textarea id="sessionNotes" rows="5" placeholder="Sensações, técnica, dores, progressões..."></textarea></div>
+              <button class="btn ghost full-btn" id="shortenWorkout">Só tenho 35 minutos</button>
+              <button class="btn ghost full-btn" id="restoreWorkout">Restaurar plano</button>
+            </aside>
+
+            <article class="panel span-12">
+              <div class="panel-head"><div><p class="overline">HISTÓRICO</p><h3>Sessões recentes</h3></div></div>
+              <div class="history-grid" id="historyList"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="nutricao" class="page" data-title="Nutrição" data-eyebrow="ENERGIA, ÁGUA E SUPLEMENTAÇÃO">
+          <div class="page-grid">
+            <article class="panel span-4 nutrition-score">
+              <p class="overline">ESTADO DIÁRIO</p>
+              <div class="macro-ring"><strong id="nutritionScore">72%</strong><span>consistência</span></div>
+              <p class="muted" id="nutritionInsight">Regista refeições e suplementação para melhorar a leitura.</p>
+            </article>
+
+            <article class="panel span-8">
+              <div class="panel-head"><div><p class="overline">MACROS</p><h3>Objetivo diário</h3></div></div>
+              <div class="macro-grid">
+                <div class="macro-card protein"><span>Proteína</span><strong id="proteinValue">138 / 160 g</strong><div class="progress"><i style="width:86%"></i></div></div>
+                <div class="macro-card carbs"><span>Hidratos</span><strong id="carbValue">205 / 280 g</strong><div class="progress"><i style="width:73%"></i></div></div>
+                <div class="macro-card fat"><span>Gordura</span><strong id="fatValue">62 / 70 g</strong><div class="progress"><i style="width:89%"></i></div></div>
+              </div>
+            </article>
+
+            <article class="panel span-5">
+              <div class="panel-head"><div><p class="overline">HIDRATAÇÃO</p><h3 id="waterMetric">0,0 L / 3,5 L</h3></div><span class="tag" id="waterPercent">0%</span></div>
+              <div class="water-visual"><div id="waterFill"></div></div>
+              <div class="button-grid"><button class="btn primary" data-water="0.25">+250 ml</button><button class="btn ghost" data-water="0.5">+500 ml</button><button class="btn ghost" id="resetWater">Repor</button></div>
+            </article>
+
+            <article class="panel span-7">
+              <div class="panel-head"><div><p class="overline">REFEIÇÕES</p><h3>Registos de hoje</h3></div><button class="text-btn" id="focusMeal">Nova refeição</button></div>
+              <div class="meal-list" id="nutritionHistory"></div>
+              <div class="meal-form">
+                <input id="mealName" placeholder="Ex.: pequeno-almoço">
+                <input id="mealNotes" placeholder="Alimentos ou observações">
+                <button class="btn primary compact" id="addMeal">Registar</button>
+              </div>
+            </article>
+
+            <article class="panel span-12">
+              <div class="panel-head"><div><p class="overline">SUPLEMENTAÇÃO</p><h3>Checklist diário</h3></div></div>
+              <div class="supplement-grid" id="supplementList"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="recovery" class="page" data-title="Recovery" data-eyebrow="SONO, FADIGA, STRESS E PRONTIDÃO">
+          <div class="page-grid">
+            <article class="panel span-5 recovery-checkin">
+              <p class="overline">CHECK-IN DIÁRIO</p>
+              <h2>Como está o sistema hoje?</h2>
+              <div class="range-field"><label>Sono <output id="sleepOut">7</output></label><input id="sleep" type="range" min="1" max="10" value="7"></div>
+              <div class="range-field"><label>Energia <output id="energyOut">7</output></label><input id="energy" type="range" min="1" max="10" value="7"></div>
+              <div class="range-field"><label>Dor muscular <output id="sorenessOut">4</output></label><input id="soreness" type="range" min="1" max="10" value="4"></div>
+              <div class="range-field"><label>Stress <output id="stressOut">4</output></label><input id="stress" type="range" min="1" max="10" value="4"></div>
+              <button class="btn primary full-btn" id="saveRecovery">Guardar e analisar</button>
+            </article>
+
+            <article class="panel span-7 recovery-analysis">
+              <div class="panel-head"><div><p class="overline">INTERPRETAÇÃO</p><h2 id="recoveryHeadline">Sem dados recentes</h2></div><div class="readiness-mini"><strong id="recoveryReady">—</strong><span>readiness</span></div></div>
+              <p class="decision-text" id="recoveryText">Regista sono, energia, dor e stress para obteres uma decisão automática.</p>
+              <div class="recovery-kpis">
+                <div><span>Intensidade</span><strong id="recoveryIntensity">Base</strong></div>
+                <div><span>Volume</span><strong id="recoveryVolume">100%</strong></div>
+                <div><span>Prioridade</span><strong id="recoveryPriority">Check-in</strong></div>
+              </div>
+              <canvas id="recoveryChart" height="190" aria-label="Histórico de recovery"></canvas>
+            </article>
+
+            <article class="panel span-12"><div class="panel-head"><div><p class="overline">HISTÓRICO</p><h3>Últimos registos</h3></div></div><div class="history-grid" id="recoveryHistory"></div></article>
+          </div>
+        </section>
+
+        <section id="avaliacoes" class="page" data-title="Avaliações" data-eyebrow="COMPOSIÇÃO CORPORAL E EVOLUÇÃO">
+          <div class="page-grid">
+            <article class="panel span-4">
+              <p class="overline">NOVA AVALIAÇÃO</p>
+              <div class="field"><label>Peso (kg)</label><input id="weight" type="number" step="0.1" value="74.3"></div>
+              <div class="field"><label>Massa gorda (%)</label><input id="bodyFatInput" type="number" step="0.1" value="11.3"></div>
+              <div class="field"><label>Cintura (cm)</label><input id="waist" type="number" step="0.1"></div>
+              <div class="field"><label>VO₂ estimado</label><input id="vo2" type="number" step="0.1" value="32.23"></div>
+              <button class="btn primary full-btn" id="saveAssessment">Guardar avaliação</button>
+            </article>
+
+            <article class="panel span-8">
+              <div class="panel-head"><div><p class="overline">EVOLUÇÃO</p><h3>Composição corporal</h3></div><span class="tag">META 80 KG</span></div>
+              <canvas id="assessmentChart" height="235" aria-label="Gráfico de evolução corporal"></canvas>
+              <div class="assessment-kpis">
+                <div><span>Peso atual</span><strong id="assessmentWeight">74,3 kg</strong></div>
+                <div><span>Gordura</span><strong id="assessmentFat">11,3%</strong></div>
+                <div><span>Diferença para meta</span><strong id="assessmentTarget">5,7 kg</strong></div>
+              </div>
+            </article>
+
+            <article class="panel span-12"><div class="panel-head"><div><p class="overline">HISTÓRICO</p><h3>Avaliações registadas</h3></div></div><div class="assessment-list" id="assessmentList"></div></article>
+          </div>
+        </section>
+
+        <section id="planeamento" class="page" data-title="Planeamento" data-eyebrow="52 SEMANAS DE PERFORMANCE HÍBRIDA">
+          <div class="page-grid">
+            <article class="panel span-12 planning-hero">
+              <div><p class="overline">MACROCICLO</p><h2>HYROX M45 · 52 semanas</h2><p class="muted">Força, hipertrofia funcional, capacidade aeróbia, potência e integração específica.</p></div>
+              <div class="week-control"><label>Semana atual</label><input id="weekInput" type="number" min="1" max="52"><button class="btn primary compact" id="saveWeek">Atualizar</button></div>
+            </article>
+            <article class="panel span-12"><div class="phase-list" id="phaseList"></div></article>
+          </div>
+        </section>
+
+        <section id="dados" class="page" data-title="Dados" data-eyebrow="PERFIL, BACKUP E CONFIGURAÇÃO">
+          <div class="page-grid">
+            <article class="panel span-7">
+              <p class="overline">PERFIL OPERATOR</p>
+              <h2>João Pereira</h2>
+              <div class="profile-grid" id="profileDetails"></div>
+            </article>
+            <article class="panel span-5">
+              <p class="overline">APLICAÇÃO</p>
+              <div class="settings-list">
+                <button class="setting-row" id="exportData"><span>Exportar backup</span><strong>JSON ↗</strong></button>
+                <label class="setting-row"><span>Importar backup</span><strong>Escolher</strong><input id="importData" type="file" accept="application/json" hidden></label>
+                <button class="setting-row danger-row" id="resetData"><span>Repor aplicação</span><strong>Apagar</strong></button>
+              </div>
+            </article>
+            <article class="panel span-12">
+              <div class="panel-head"><div><p class="overline">REGISTO DO SISTEMA</p><h3>Ações da BLUE AI</h3></div><button class="text-btn" id="clearAiLog">Limpar</button></div>
+              <div class="ai-log" id="aiLog"></div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <aside class="ai-panel" id="aiPanel" aria-label="Assistente BLUE AI">
+      <div class="ai-panel-head">
+        <div class="ai-identity"><div class="ai-core"><i></i></div><div><strong>BLUE AI</strong><small>Operator intelligence</small></div></div>
+        <button class="icon-btn" id="closeAiPanel" aria-label="Fechar assistente">×</button>
+      </div>
+      <div class="ai-conversation" id="aiConversation"></div>
+      <div class="quick-prompts">
+        <button data-prompt="Mostra o dashboard">Dashboard</button>
+        <button data-prompt="Tenho 35 minutos">35 minutos</button>
+        <button data-prompt="Como está a minha recuperação?">Recovery</button>
+        <button data-prompt="Regista 500 ml de água">+500 ml</button>
+      </div>
+      <div class="ai-input-wrap">
+        <button class="voice-btn" id="voiceBtn" aria-label="Falar com a BLUE AI">●</button>
+        <input id="blueAiInput" placeholder="Escreve ou fala com a BLUE AI..." autocomplete="off">
+        <button class="send-btn" id="blueAiSend">Enviar</button>
+      </div>
+      <p class="ai-hint">Ações importantes pedem confirmação antes de alterar dados.</p>
+    </aside>
+
+    <button class="ai-fab" id="openAiPanel" aria-label="Abrir BLUE AI"><span></span></button>
+
+    <nav class="mobile-nav" id="mobileNav" aria-label="Navegação móvel">
+      <button class="active" data-page="dashboard"><span>⌂</span><small>Início</small></button>
+      <button data-page="treino"><span>↗</span><small>Treino</small></button>
+      <button class="mobile-ai" id="mobileAiBtn"><i></i></button>
+      <button data-page="nutricao"><span>◒</span><small>Nutrição</small></button>
+      <button data-page="recovery"><span>♡</span><small>Recovery</small></button>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal" id="confirmModal" aria-hidden="true">
+    <div class="modal-card">
+      <p class="overline">CONFIRMAR AÇÃO</p>
+      <h3 id="confirmTitle">Confirmar</h3>
+      <p class="muted" id="confirmText"></p>
+      <div class="modal-actions"><button class="btn ghost" id="cancelConfirm">Cancelar</button><button class="btn primary" id="acceptConfirm">Confirmar</button></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
