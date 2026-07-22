@@ -1,0 +1,32 @@
+name: Telegram nutrition reminders
+
+on:
+  schedule:
+    - cron: "35 4,5 * * 1-5"
+    - cron: "30 6,7 * * *"
+    - cron: "30 9,10 * * *"
+    - cron: "0 11,12 * * *"
+    - cron: "0 13,14 * * *"
+    - cron: "30 14,15 * * *"
+    - cron: "0 17,18 * * *"
+    - cron: "30 19,20 * * *"
+    - cron: "45 20,21 * * *"
+  workflow_dispatch:
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Send scheduled reminder
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/telegram_reminders.py
