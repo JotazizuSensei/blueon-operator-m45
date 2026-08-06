@@ -1,0 +1,39 @@
+name: Publicar Euromilhoes Lab v3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'euromilhoes-v3-payload/**'
+      - '.github/workflows/publish-euromilhoes-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter repositorio
+        uses: actions/checkout@v4
+
+      - name: Reconstruir PWA v3
+        run: |
+          rm -rf euromilhoes-lab
+          mkdir -p euromilhoes-lab
+          cat euromilhoes-v3-payload/chunk_* | base64 --decode > /tmp/eurolab-v3.tar.gz
+          tar -xzf /tmp/eurolab-v3.tar.gz -C euromilhoes-lab
+          test -s euromilhoes-lab/index.html
+          test -s euromilhoes-lab/manifest.webmanifest
+          test -s euromilhoes-lab/sw.js
+          test -s euromilhoes-lab/latest-result.json
+          test -s euromilhoes-lab/update_results.py
+
+      - name: Guardar versão v3
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add euromilhoes-lab
+          git commit -m 'Atualizar Euromilhoes Lab v3' || true
+          git push
