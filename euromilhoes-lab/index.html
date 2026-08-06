@@ -24,7 +24,7 @@
 (async()=>{
   const status=document.getElementById('status');
   const retry=document.getElementById('retry');
-  const cacheKey='euromilhoesLabV3Shell';
+  const cacheKey='euromilhoesLabV3Shell301';
   const files=['chunk_00','chunk_01','chunk_02','chunk_03'];
   function parseTar(buffer){
     const bytes=new Uint8Array(buffer), decoder=new TextDecoder();
@@ -42,7 +42,7 @@
     return result;
   }
   async function onlineHtml(){
-    const texts=await Promise.all(files.map(name=>fetch('../euromilhoes-v3-payload/'+name+'?v=3.0.0',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})));
+    const texts=await Promise.all(files.map(name=>fetch('../euromilhoes-v3-payload/'+name+'?v=3.0.1',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})));
     const binary=atob(texts.join('').replace(/\s/g,''));
     const compressed=Uint8Array.from(binary,c=>c.charCodeAt(0));
     if(!('DecompressionStream' in window)) throw new Error('Navegador sem suporte de descompressão');
@@ -51,7 +51,11 @@
     if(!archive['index.html']) throw new Error('Aplicação não encontrada no pacote');
     return new TextDecoder().decode(archive['index.html']);
   }
+  function correctKnownResult(html){
+    return html.replace('numbers:[20,30,34,46,50],stars:[1,12]','numbers:[25,30,34,46,50],stars:[1,12]');
+  }
   function launch(html){
+    html=correctKnownResult(html);
     localStorage.setItem(cacheKey,html);
     document.open();document.write(html);document.close();
   }
