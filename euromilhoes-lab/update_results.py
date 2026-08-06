@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Atualiza latest-result.json a partir de uma fonte oficial do Euromilhões."""
+"""Atualiza latest-result.json a partir do resultado oficial dos Jogos Santa Casa."""
 from __future__ import annotations
 
 import datetime as dt
@@ -12,13 +12,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "latest-result.json"
-MONTHS_ES = {
-    1: "enero", 2: "febrero", 3: "marzo", 4: "abril", 5: "mayo", 6: "junio",
-    7: "julio", 8: "agosto", 9: "septiembre", 10: "octubre", 11: "noviembre", 12: "diciembre",
-}
+SOURCE_URL = "https://www.jogossantacasa.pt/web/SCCartazResult/euroMilhoes"
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; EuromilhoesLab/1.0; +https://github.com/JotazizuSensei/blueon-operator-m45)",
-    "Accept-Language": "es-ES,es;q=0.9,pt-PT;q=0.8",
+    "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.7",
+    "Cache-Control": "no-cache",
 }
 
 
@@ -33,42 +31,38 @@ def text_content(raw_html: str) -> str:
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", raw_html))).strip()
 
 
-def candidate_draw_dates(today: dt.date) -> list[dt.date]:
-    dates: list[dt.date] = []
-    for days_back in range(0, 15):
-        candidate = today - dt.timedelta(days=days_back)
-        if candidate.weekday() in (1, 4):
-            dates.append(candidate)
-    return dates
-
-
-def parse_selae(date: dt.date) -> dict | None:
-    url = (
-        "https://www.loteriasyapuestas.es/es/euromillones/resultados/"
-        f"euromillones-resultados-del-{date.day:02d}-de-{MONTHS_ES[date.month]}-de-{date.year}"
-    )
+def parse_latest() -> dict | None:
     try:
-        text = text_content(fetch(url))
-    except Exception:
+        text = text_content(fetch(SOURCE_URL))
+    except Exception as exc:
+        print(f"Falha ao consultar Jogos Santa Casa: {exc}")
         return None
+
     pattern = re.compile(
-        r"(\d{2})\s*-\s*(\d{2})\s*-\s*(\d{2})\s*-\s*(\d{2})\s*-\s*(\d{2})\s+Estrellas:\s*(\d{2})\s*-\s*(\d{2})",
+        r"Data do Sorteio\s*-\s*(\d{2})/(\d{2})/(\d{4})"
+        r".{0,600}?\b(\d{1,2})\s+(\d{1,2})\s+(\d{1,2})\s+(\d{1,2})\s+(\d{1,2})"
+        r"\s*\+\s*(\d{1,2})\s+(\d{1,2})\b",
         re.I,
     )
     match = pattern.search(text)
     if not match:
+        print("Não foi possível reconhecer a chave oficial na página.")
         return None
-    values = [int(value) for value in match.groups()]
+
+    day, month, year = map(int, match.groups()[:3])
+    values = [int(value) for value in match.groups()[3:]]
     numbers, stars = sorted(values[:5]), sorted(values[5:])
     if len(set(numbers)) != 5 or len(set(stars)) != 2:
+        print("Resultado inválido ou duplicado; ficheiro mantido.")
         return None
+
     return {
-        "date": date.isoformat(),
+        "date": dt.date(year, month, day).isoformat(),
         "numbers": numbers,
         "stars": stars,
         "m1": "",
-        "source": "Loterías y Apuestas del Estado — resultado oficial europeu",
-        "sourceUrl": url,
+        "source": "Jogos Santa Casa — resultado oficial",
+        "sourceUrl": SOURCE_URL,
         "official": True,
         "updatedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
     }
@@ -83,23 +77,18 @@ def load_current() -> dict:
 
 def main() -> int:
     current = load_current()
-    today = dt.datetime.now(dt.timezone.utc).date()
-    found = None
-    for date in candidate_draw_dates(today):
-        found = parse_selae(date)
-        if found:
-            break
+    found = parse_latest()
     if not found:
-        print("Nenhum novo resultado oficial encontrado; ficheiro mantido.")
-        return 0
-    if current.get("date") == found["date"] and current.get("numbers") == found["numbers"] and current.get("stars") == found["stars"]:
-        print(f"Resultado {found['date']} já está atualizado.")
         return 0
     if current.get("date") and current["date"] > found["date"]:
         print("A fonte devolveu um resultado mais antigo; ficheiro mantido.")
         return 0
     if current.get("date") == found["date"] and current.get("m1"):
         found["m1"] = current["m1"]
+    comparable = ("date", "numbers", "stars", "m1")
+    if all(current.get(key) == found.get(key) for key in comparable):
+        print(f"Resultado {found['date']} já está atualizado.")
+        return 0
     OUTPUT.write_text(json.dumps(found, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Atualizado para {found['date']}: {found['numbers']} + {found['stars']}")
     return 0
