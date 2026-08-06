@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths-ignore:
       - 'pages-status.json'
+  schedule:
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -40,6 +42,9 @@ jobs:
           test -s _site/euromilhoes-lab/index.html
           test -s _site/euromilhoes-lab/manifest.webmanifest
           test -s _site/euromilhoes-lab/sw.js
+          test -s _site/euromilhoes-lab/latest-result.json
+          test -s _site/euromilhoes-v3-payload/chunk_00
+          test -s _site/euromilhoes-v3-payload/chunk_03
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
