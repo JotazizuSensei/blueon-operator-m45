@@ -6,6 +6,10 @@ on:
     paths:
       - 'euromilhoes-v3-payload/**'
       - '.github/workflows/publish-euromilhoes-v3.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'euromilhoes-v3-payload/**'
   workflow_dispatch:
 
 permissions:
@@ -17,6 +21,8 @@ jobs:
     steps:
       - name: Obter repositorio
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
 
       - name: Reconstruir PWA v3
         run: |
@@ -36,4 +42,8 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add euromilhoes-lab
           git commit -m 'Atualizar Euromilhoes Lab v3' || true
-          git push
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git push origin HEAD:${{ github.head_ref }}
+          else
+            git push
+          fi
