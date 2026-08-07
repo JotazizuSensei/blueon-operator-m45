@@ -1,4 +1,4 @@
-const VERSION='euromilhoes-lab-v3.0.0';
+const VERSION='euromilhoes-lab-v4.0.0';
 const STATIC_CACHE=`static-${VERSION}`;
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(STATIC_CACHE).then(cache=>cache.addAll(ASSETS)));});
