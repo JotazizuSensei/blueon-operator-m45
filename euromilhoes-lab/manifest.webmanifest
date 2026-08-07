@@ -1,13 +1,13 @@
 {
   "name":"Euromilhões Lab",
   "short_name":"Euro Lab",
-  "description":"Registo, resultados e análise pessoal do Euromilhões.",
   "id":"./",
   "start_url":"./",
   "scope":"./",
   "display":"standalone",
   "background_color":"#06121d",
-  "theme_color":"#071827",
+  "theme_color":"#061827",
+  "description":"Registo pessoal de apostas, resultados e geração de chaves do Euromilhões.",
   "icons":[
     {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
     {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
