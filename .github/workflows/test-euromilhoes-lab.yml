@@ -1,0 +1,65 @@
+name: Testar Euromilhoes Lab
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'euromilhoes-lab/**'
+      - '.github/workflows/test-euromilhoes-lab.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sintaxe JavaScript
+        run: |
+          node --check euromilhoes-lab/core.js
+          node --check euromilhoes-lab/app.js
+          node --check euromilhoes-lab/sw.js
+
+      - name: Testes do motor
+        run: node euromilhoes-lab/test_core.js
+
+      - name: Validar ficheiros PWA
+        run: |
+          python - <<'PY'
+          import json, pathlib, re
+          p=pathlib.Path('euromilhoes-lab')
+          manifest=json.loads((p/'manifest.webmanifest').read_text())
+          result=json.loads((p/'latest-result.json').read_text())
+          assert manifest['display']=='standalone'
+          assert manifest['start_url']=='./'
+          assert len(manifest['icons'])>=2
+          assert result['date']=='2026-08-04'
+          assert result['numbers']==[25,30,34,46,50]
+          assert result['stars']==[1,12]
+          html=(p/'index.html').read_text()
+          app=(p/'app.js').read_text()
+          ids=set(re.findall(r'id="([^"]+)"',html))
+          refs=set(re.findall(r"\$\('([^']+)'\)",app))
+          missing=sorted(refs-ids)
+          assert not missing, f'IDs em falta: {missing}'
+          for asset in ['styles.css','core.js','app.js','sw.js','icon-192.png','icon-512.png']:
+              assert (p/asset).is_file() and (p/asset).stat().st_size>0, asset
+          print('PWA_STATIC_TESTS_OK')
+          PY
+
+      - name: Smoke test HTTP
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory euromilhoes-lab >/tmp/eurolab-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          sleep 2
+          curl --fail --silent http://127.0.0.1:8765/ | grep -q 'Euromilhões Lab'
+          curl --fail --silent http://127.0.0.1:8765/core.js | grep -q 'generateBest'
+          curl --fail --silent http://127.0.0.1:8765/app.js | grep -q 'syncOfficial'
+          curl --fail --silent http://127.0.0.1:8765/manifest.webmanifest | python -m json.tool >/dev/null
+          curl --fail --silent http://127.0.0.1:8765/latest-result.json | python -m json.tool >/dev/null
+          echo HTTP_SMOKE_TESTS_OK
