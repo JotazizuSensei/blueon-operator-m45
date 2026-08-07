@@ -1,10 +1,19 @@
 {
-  "date":"2026-08-04",
-  "numbers":[25,30,34,46,50],
-  "stars":[1,12],
-  "m1":"",
-  "source":"Jogos Santa Casa — resultado oficial",
-  "sourceUrl":"https://www.jogossantacasa.pt/web/SCCartazResult/euroMilhoes",
-  "official":true,
-  "updatedAt":"2026-08-06T20:25:00+01:00"
+  "date": "2026-08-07",
+  "numbers": [
+    26,
+    29,
+    35,
+    38,
+    47
+  ],
+  "stars": [
+    1,
+    2
+  ],
+  "m1": "",
+  "source": "Jogos Santa Casa — resultado oficial",
+  "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/euromilhoes",
+  "official": true,
+  "updatedAt": "2026-08-07T20:34:23.519132+00:00"
 }
