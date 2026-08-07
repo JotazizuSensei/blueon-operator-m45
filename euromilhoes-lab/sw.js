@@ -1,13 +1,4 @@
-const VERSION='euromilhoes-lab-v4.0.0';
-const STATIC_CACHE=`static-${VERSION}`;
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
-self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(STATIC_CACHE).then(cache=>cache.addAll(ASSETS)));});
-self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==STATIC_CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
-self.addEventListener('fetch',event=>{
-  const url=new URL(event.request.url);
-  if(url.pathname.endsWith('/latest-result.json')||event.request.mode==='navigate'){
-    event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{const copy=response.clone();caches.open(STATIC_CACHE).then(c=>c.put(event.request,copy));return response;}).catch(()=>caches.match(event.request).then(r=>r||caches.match('./index.html'))));
-    return;
-  }
-  event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(response=>{const copy=response.clone();caches.open(STATIC_CACHE).then(c=>c.put(event.request,copy));return response;})));
-});
+const VERSION='eurolab-v4.0.0',CACHE=`${VERSION}-static`,ASSETS=['./','index.html','styles.css','core.js','app.js','manifest.webmanifest','icon-192.png','icon-512.png'];
+self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.mode==='navigate'||u.pathname.endsWith('/latest-result.json')){e.respondWith(fetch(e.request,{cache:'no-store'}).then(r=>{if(e.request.mode==='navigate'){const c=r.clone();caches.open(CACHE).then(x=>x.put('./',c))}return r}).catch(()=>e.request.mode==='navigate'?caches.match('./'):caches.match(e.request)));return}e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))});
