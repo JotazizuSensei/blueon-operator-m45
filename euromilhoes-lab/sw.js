@@ -1,6 +1,6 @@
 const VERSION='eurolab-v4.1.0';
 const CACHE=`${VERSION}-static`;
-const STATIC=['index.html','styles.css','core.js','app.js','manifest.webmanifest','icon-192.png','icon-512.png'];
+const STATIC=['index.html','styles.css','core.js','app.js','update.js','manifest.webmanifest','icon-192.png','icon-512.png'];
 const bust=(path)=>`${path}${path.includes('?')?'&':'?'}v=${encodeURIComponent(VERSION)}`;
 
 self.addEventListener('install',event=>{
