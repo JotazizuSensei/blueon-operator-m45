@@ -45,4 +45,17 @@
 </main>
 </div>
 <script src="core.js"></script><script src="app.js"></script>
+<script>
+(()=>{
+  const state=window.__EUROLAB_STATE__;
+  if(!state||!Array.isArray(state.tickets))return;
+  const known={id:'20260804-confirmada',drawDate:'2026-08-04',numbers:[7,19,32,42,46],stars:[3,11],mCode:'',cost:2.5,prize:0};
+  const key=x=>`${x.drawDate}|${[...(x.numbers||[])].sort((a,b)=>a-b).join('-')}|${[...(x.stars||[])].sort((a,b)=>a-b).join('-')}`;
+  if(!state.tickets.some(t=>key(t)===key(known))){
+    state.tickets.push(known);
+    localStorage.setItem('eurolab.v4',JSON.stringify(state));
+    if(typeof window.renderAll==='function')window.renderAll();
+  }
+})();
+</script>
 </body></html>
