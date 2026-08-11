@@ -1,6 +1,6 @@
-const VERSION='eurolab-v4.1.0';
+const VERSION='eurolab-v4.1.1';
 const CACHE=`${VERSION}-static`;
-const STATIC=['index.html','styles.css','core.js','app.js','update.js','manifest.webmanifest','icon-192.png','icon-512.png'];
+const STATIC=['index.html','styles.css','core.js','app.js','stable-update.js','manifest.webmanifest','icon-192.png','icon-512.png'];
 const bust=(path)=>`${path}${path.includes('?')?'&':'?'}v=${encodeURIComponent(VERSION)}`;
 
 self.addEventListener('install',event=>{
@@ -49,7 +49,13 @@ self.addEventListener('fetch',event=>{
   }
 
   if(url.pathname.endsWith('/latest-result.json')){
-    event.respondWith(fetch(bust('latest-result.json'),{cache:'no-store'}).catch(()=>caches.match(event.request)));
+    event.respondWith((async()=>{
+      try{
+        return await fetch(bust('latest-result.json'),{cache:'no-store'});
+      }catch{
+        return (await caches.match('latest-result.json')) || Response.error();
+      }
+    })());
     return;
   }
 
