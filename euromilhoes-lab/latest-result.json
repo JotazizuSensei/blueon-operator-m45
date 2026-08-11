@@ -1,11 +1,11 @@
 {
-  "date": "2026-08-07",
+  "date": "2026-08-11",
   "numbers": [
-    26,
-    29,
-    35,
-    38,
-    47
+    3,
+    11,
+    17,
+    46,
+    48
   ],
   "stars": [
     1,
@@ -15,5 +15,5 @@
   "source": "Jogos Santa Casa — resultado oficial",
   "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/euromilhoes",
   "official": true,
-  "updatedAt": "2026-08-07T20:34:23.519132+00:00"
+  "updatedAt": "2026-08-11T19:58:06.334624+00:00"
 }
