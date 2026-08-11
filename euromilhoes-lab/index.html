@@ -40,12 +40,12 @@
 </section>
 <section id="data" class="page">
   <div class="grid"><article class="card"><h2>Orçamento</h2><label>Limite mensal (€)<input id="budget" type="number" min="0" step="0.5" value="10"></label><p id="budgetStatus" class="mut"></p></article><article class="card"><h2>Cópia de segurança</h2><div class="actions"><button class="btn primary" id="exportJson">Exportar JSON</button><label class="btn secondary file">Importar JSON<input id="importJson" type="file" accept="application/json,.json"></label><button class="btn danger" id="resetData">Apagar dados pessoais</button></div></article></div>
-  <article class="card"><h3>Atualizações</h3><p class="mut">A app verifica novas versões automaticamente quando abre, quando volta ao primeiro plano e periodicamente. Não é necessário reinstalar.</p><p class="mut">Versão da aplicação: <b>4.1.0</b></p></article>
+  <article class="card"><h3>Atualizações</h3><p class="mut">A app procura novas versões em segundo plano, mas nunca recarrega enquanto estás a utilizá-la. A atualização entra na abertura seguinte, sem reinstalar.</p><p class="mut">Versão da aplicação: <b>4.1.1</b></p></article>
   <article class="card"><h3>Sobre o gerador</h3><p class="mut">As frequências históricas são usadas apenas como variável de diversificação. Não tornam um número mais provável no próximo sorteio. A app guarda os teus dados neste dispositivo.</p></article>
 </section>
 </main>
 </div>
-<script src="core.js"></script><script src="app.js"></script><script src="update.js"></script>
+<script src="core.js"></script><script src="app.js"></script><script src="stable-update.js"></script>
 <script>
 (()=>{
   const state=window.__EUROLAB_STATE__;
