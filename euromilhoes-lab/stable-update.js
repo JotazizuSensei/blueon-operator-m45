@@ -1,35 +1,45 @@
 (()=>{
 'use strict';
-const APP_VERSION='4.1.1';
-let lastCheck=0;
-let checking=false;
+const APP_VERSION='4.2.0';
+let lastCheck=0,checking=false;
 
-async function checkForAppUpdate(force=false){
-  if(!('serviceWorker' in navigator)||!location.protocol.startsWith('http')||checking) return;
-  const now=Date.now();
-  if(!force && now-lastCheck<30*60*1000) return;
-  lastCheck=now;
-  checking=true;
-  try{
-    // IMPORTANT: app.js e este módulo usam exatamente o mesmo URL do service worker.
-    // Assim evitamos o ciclo sw.js <-> sw.js?v=... que fazia a app recarregar/piscar.
-    const reg=await navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
-    await reg.update();
-    // Não fazemos reload automático. Uma nova versão fica pronta e entra
-    // naturalmente na próxima abertura da app, sem interromper a navegação atual.
-  }catch(err){
-    console.warn('Atualização da app indisponível:',err);
-  }finally{
-    checking=false;
-  }
+function loadScript(src){
+  return new Promise((resolve,reject)=>{
+    if(document.querySelector(`script[data-eurolab-module="${src}"]`)) return resolve();
+    const s=document.createElement('script');
+    s.src=src+'?v='+APP_VERSION;
+    s.dataset.eurolabModule=src;
+    s.onload=resolve;s.onerror=reject;
+    document.body.appendChild(s);
+  });
 }
 
-document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible') checkForAppUpdate(false);
-});
-window.addEventListener('online',()=>checkForAppUpdate(true));
-window.addEventListener('pageshow',()=>checkForAppUpdate(false));
-checkForAppUpdate(true);
+async function loadEuroDreams(){
+  try{
+    await loadScript('ed-store.js');
+    await loadScript('ed-base.js');
+  }catch(err){console.warn('Módulo EuroDreams indisponível:',err)}
+}
 
+async function checkForAppUpdate(force=false){
+  if(!('serviceWorker' in navigator)||!location.protocol.startsWith('http')||checking)return;
+  const now=Date.now();
+  if(!force&&now-lastCheck<30*60*1000)return;
+  lastCheck=now;checking=true;
+  try{
+    const reg=await navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});
+    await reg.update();
+  }catch(err){console.warn('Atualização da app indisponível:',err)}
+  finally{checking=false}
+}
+
+function showVersion(){
+  [...document.querySelectorAll('#data b')].forEach(b=>{if(/^4\.1\./.test(b.textContent))b.textContent=APP_VERSION});
+}
+
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){checkForAppUpdate(false);loadEuroDreams()}});
+window.addEventListener('online',()=>checkForAppUpdate(true));
+window.addEventListener('pageshow',()=>{checkForAppUpdate(false);loadEuroDreams()});
+showVersion();loadEuroDreams();checkForAppUpdate(true);
 window.EUROLAB_APP_VERSION=APP_VERSION;
 })();
