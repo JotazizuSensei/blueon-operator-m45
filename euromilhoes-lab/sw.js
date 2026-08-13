@@ -1,6 +1,6 @@
-const VERSION='eurolab-v4.2.0';
+const VERSION='eurolab-v4.3.0';
 const CACHE=`${VERSION}-static`;
-const STATIC=['index.html','styles.css','core.js','app.js','stable-update.js','ed-store.js','ed-base.js','manifest.webmanifest','icon-192.png','icon-512.png'];
+const STATIC=['index.html','styles.css','core.js','app.js','stable-update.js','ed-store.js','ed-base.js','ed-ui.js','simple-ui.js','manifest.webmanifest','icon-192.png','icon-512.png'];
 const bust=p=>`${p}${p.includes('?')?'&':'?'}v=${encodeURIComponent(VERSION)}`;
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil((async()=>{const c=await caches.open(CACHE);for(const a of STATIC){try{const r=await fetch(bust(a),{cache:'no-store'});if(r.ok)await c.put(a,r.clone())}catch{}}})())});
 self.addEventListener('activate',e=>{e.waitUntil((async()=>{const ks=await caches.keys();await Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim()})())});
