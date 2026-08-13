@@ -1,10 +1,10 @@
-name: Publicar Euromilhoes Lab
+name: Publicar Euro Lab v5
 
 on:
   push:
     branches: [main]
     paths:
-      - 'euromilhoes-payload/**'
+      - 'eurolab-v5-payload/**'
       - '.github/workflows/publish-euromilhoes-lab.yml'
   workflow_dispatch:
 
@@ -18,21 +18,26 @@ jobs:
       - name: Obter repositorio
         uses: actions/checkout@v4
 
-      - name: Reconstruir PWA
+      - name: Reconstruir Euro Lab v5
+        run: |
+          rm -rf /tmp/eurolab-v5
+          mkdir -p /tmp/eurolab-v5
+          cat eurolab-v5-payload/chunk_* | base64 --decode > /tmp/eurolab-v5.tar.gz
+          tar -xzf /tmp/eurolab-v5.tar.gz -C /tmp/eurolab-v5
+          test -s /tmp/eurolab-v5/index.html
+          test -s /tmp/eurolab-v5/app.js
+          test -s /tmp/eurolab-v5/core.js
+          test -s /tmp/eurolab-v5/styles.css
+          test -s /tmp/eurolab-v5/sw.js
+          test -s /tmp/eurolab-v5/manifest.webmanifest
+
+      - name: Publicar ficheiros
         run: |
           rm -rf euromilhoes-lab
           mkdir -p euromilhoes-lab
-          cat euromilhoes-payload/chunk_* | base64 --decode > /tmp/euromilhoes-lab.tar.gz
-          tar -xzf /tmp/euromilhoes-lab.tar.gz -C euromilhoes-lab
-          test -s euromilhoes-lab/index.html
-          test -s euromilhoes-lab/manifest.webmanifest
-          test -s euromilhoes-lab/sw.js
-          touch .nojekyll
-
-      - name: Guardar PWA no repositorio
-        run: |
+          cp -a /tmp/eurolab-v5/. euromilhoes-lab/
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add euromilhoes-lab .nojekyll
-          git commit -m 'Publicar Euromilhoes Lab PWA' || true
+          git add euromilhoes-lab
+          git commit -m 'Publicar Euro Lab v5' || true
           git push
