@@ -33,11 +33,10 @@ def parse_loto(url:str,count:int,extra_count:int,max_n:int,max_e:int,label:str)-
     except Exception as exc:
         print(f'AVISO_{label}_FETCH',repr(exc));return None
     head=r'Data do Sorteio\s*-\s*(\d{2})/(\d{2})/(\d{4}).{0,700}?Chave.{0,350}?Ordem de sa[ií]da.{0,350}?'
-    nums='\\s+'.join([r'(\d{1,2})']*count)
-    extras='\\s+'.join([r'(\d{1,2})']*extra_count)
+    nums=r'\s+'.join([r'(\d{1,2})']*count)
+    extras=r'\s+'.join([r'(\d{1,2})']*extra_count)
     m=re.search(head+nums+r'\s*\+\s*'+extras,t,re.I)
     if not m:
-        # fallback mais permissivo depois da data, mantendo validação forte
         head2=r'Data do Sorteio\s*-\s*(\d{2})/(\d{2})/(\d{4}).{0,1400}?'
         m=re.search(head2+nums+r'\s*\+\s*'+extras,t,re.I)
     if not m:
