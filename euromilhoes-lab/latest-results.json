@@ -1,16 +1,36 @@
 {
   "em": {
     "date": "2026-08-11",
-    "numbers": [3, 11, 17, 46, 48],
-    "extras": [1, 2],
+    "numbers": [
+      3,
+      11,
+      17,
+      46,
+      48
+    ],
+    "extras": [
+      1,
+      2
+    ],
     "source": "Jogos Santa Casa — resultado oficial",
+    "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/euromilhoes",
     "official": true
   },
   "ed": {
-    "date": "2026-08-10",
-    "numbers": [7, 9, 10, 26, 33, 40],
-    "extras": [1],
+    "date": "2026-08-13",
+    "numbers": [
+      10,
+      14,
+      18,
+      20,
+      26,
+      30
+    ],
+    "extras": [
+      5
+    ],
     "source": "Jogos Santa Casa — resultado oficial",
+    "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams",
     "official": true
   },
   "m1": {
@@ -19,5 +39,5 @@
     "source": "Jogos Santa Casa — resultado oficial",
     "official": true
   },
-  "updatedAt": "2026-08-14T10:45:00Z"
+  "updatedAt": "2026-08-14T10:49:43.246441+00:00"
 }
