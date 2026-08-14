@@ -1,13 +1,13 @@
 {
-  "name":"Euro Lab — Euromilhões + EuroDreams",
+  "name":"Euro Lab — Euromilhões + EuroDreams + M1lhão",
   "short_name":"Euro Lab",
   "id":"./",
   "start_url":"./",
   "scope":"./",
   "display":"standalone",
-  "background_color":"#06121d",
-  "theme_color":"#061827",
-  "description":"Dashboard pessoal de Euromilhões e EuroDreams: apostas, resultados, análise e gerador.",
+  "background_color":"#07131f",
+  "theme_color":"#07131f",
+  "description":"Dashboard pessoal de Euromilhões, EuroDreams e M1lhão: apostas, resultados, códigos, análise, gráficos e geradores.",
   "icons":[
     {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
     {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
