@@ -41,6 +41,8 @@ function showKnownCompleteness(){
 function wire(){
  $('#manualSave')?.addEventListener('click',saveManualResult);
  $('#manualGame')?.addEventListener('change',setManualHint);
+ if($('#manualDate')&&!$('#manualDate').value)$('#manualDate').value=new Date().toISOString().slice(0,10);
+ if($('#version'))$('#version').textContent='5.1.0';
  setManualHint();showKnownCompleteness();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);else wire();
