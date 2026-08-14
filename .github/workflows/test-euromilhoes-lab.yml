@@ -21,6 +21,7 @@ jobs:
       - name: Sintaxe JavaScript
         run: |
           node --check euromilhoes-lab/app-v5.js
+          node --check euromilhoes-lab/v5-extensions.js
           node --check euromilhoes-lab/sw.js
 
       - name: Sintaxe Python
@@ -43,9 +44,12 @@ jobs:
           assert 'Euro Lab' in html
           assert 'EuroDreams' in html
           assert 'M1lhão' in html
-          for asset in ['v5.css','app-v5.js','sw.js','manifest.webmanifest','icon-192.png','icon-512.png','latest-results.json']:
+          assert html.count('data-page=') == 5
+          assert 'manualSave' in html
+          assert 'm1List' in html
+          for asset in ['v5.css','v5-mobile.css','app-v5.js','v5-extensions.js','sw.js','manifest.webmanifest','icon-192.png','icon-512.png','latest-results.json']:
               assert (p/asset).is_file() and (p/asset).stat().st_size>0, asset
-          print('EURO_LAB_STATIC_TESTS_OK')
+          print('EURO_LAB_51_STATIC_TESTS_OK')
           PY
 
       - name: Smoke test HTTP
@@ -56,6 +60,7 @@ jobs:
           sleep 2
           curl --fail --silent http://127.0.0.1:8765/ | grep -q 'Euro Lab'
           curl --fail --silent http://127.0.0.1:8765/app-v5.js | grep -q 'EuroDreams'
+          curl --fail --silent http://127.0.0.1:8765/v5-extensions.js | grep -q 'saveManualResult'
           curl --fail --silent http://127.0.0.1:8765/manifest.webmanifest | python -m json.tool >/dev/null
           curl --fail --silent http://127.0.0.1:8765/latest-results.json | python -m json.tool >/dev/null
           echo HTTP_SMOKE_TESTS_OK
