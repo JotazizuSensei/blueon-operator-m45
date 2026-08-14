@@ -3,6 +3,7 @@
 const STORE='eurolab.v5';
 const $=s=>document.querySelector(s);
 const sort=a=>[...new Set(a.map(Number))].sort((x,y)=>x-y);
+const ED_LATEST={1:40,2:40,3:51,4:51,5:38,6:35,7:43,8:51,9:43,10:41,11:40,12:38,13:39,14:43,15:50,16:40,17:41,18:44,19:52,20:39,21:56,22:55,23:56,24:53,25:39,26:41,27:42,28:44,29:35,30:49,31:39,32:43,33:47,34:41,35:38,36:29,37:52,38:45,39:37,40:40};
 function load(){try{return JSON.parse(localStorage.getItem(STORE)||'null')}catch{return null}}
 function save(s){localStorage.setItem(STORE,JSON.stringify(s))}
 function parseNumbers(text){return (text||'').match(/\d+/g)?.map(Number)||[]}
@@ -38,12 +39,20 @@ function showKnownCompleteness(){
  const missing=(s.pendingCaptures||[]).length,active=(s.m1Codes||[]).filter(x=>x.status==='pending').length;
  box.innerHTML=`<div class="game-summary"><div><small>Apostas completas</small><b>${(s.tickets||[]).length}</b></div><div><small>Chaves por completar</small><b>${missing}</b></div><div><small>M1lhão ativos</small><b>${active}</b></div></div>`;
 }
+function renderLatestEuroDreamsStats(){
+ if($('#analysisGame')?.value!=='ed'||!$('#freqGrid'))return;
+ const max=Math.max(...Object.values(ED_LATEST));
+ $('#freqGrid').innerHTML=Object.entries(ED_LATEST).map(([n,v])=>`<div class="freqcell"><i style="height:${v/max*100}%"></i><span>${n}</span><small>${v}x</small></div>`).join('');
+ if($('#analysisNote'))$('#analysisNote').textContent='Frequências históricas atualizadas com os sorteios conhecidos até 13/08/2026. Servem para contexto, não para previsão.';
+}
 function wire(){
  $('#manualSave')?.addEventListener('click',saveManualResult);
  $('#manualGame')?.addEventListener('change',setManualHint);
+ $('#analysisGame')?.addEventListener('change',()=>setTimeout(renderLatestEuroDreamsStats,0));
  if($('#manualDate')&&!$('#manualDate').value)$('#manualDate').value=new Date().toISOString().slice(0,10);
  if($('#version'))$('#version').textContent='5.1.0';
- setManualHint();showKnownCompleteness();
+ const s=load();if(s){s.version='5.1.0';save(s)}
+ setManualHint();showKnownCompleteness();setTimeout(renderLatestEuroDreamsStats,0);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);else wire();
 })();
