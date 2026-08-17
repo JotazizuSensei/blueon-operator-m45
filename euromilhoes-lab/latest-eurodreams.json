@@ -1,15 +1,15 @@
 {
-  "date": "2026-08-13",
+  "date": "2026-08-17",
   "numbers": [
-    10,
-    14,
-    18,
-    20,
+    8,
+    12,
+    19,
+    21,
     26,
-    30
+    36
   ],
   "source": "Jogos Santa Casa — resultado oficial",
   "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams",
   "official": true,
-  "dream": 5
+  "dream": 4
 }
