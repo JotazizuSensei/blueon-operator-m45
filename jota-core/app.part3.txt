@@ -1,0 +1,37 @@
+kill').length,'em avaliação','var(--green)')}${metric('Conteúdos',state.content.length,'ativos/pacotes','var(--purple)')}${metric('3D ativos',state.products3d.length,'produtos/designs','var(--green)')}</div>`+
+ `<div class="section"><h2>Próximas melhores ações</h2><span>calculadas a partir do estado do sistema</span></div><div class="grid g3">${nb.map(x=>`<div class="card"><span class="pill ${x.level||''}">${esc(x.area)}</span><h3 style="margin-top:9px">${esc(x.title)}</h3><p>${esc(x.why)}</p><button class="btn small primary" onclick="app.doSuggestion('${x.id}')">Executar</button></div>`).join('')}</div>`+
+ `<div class="section"><h2>Hoje & próximos dias</h2><span>Step-by-step unificado</span></div><div class="grid g2"><div class="card"><div class="list">${due.length?due.map(taskRow).join(''):'<div class="empty">Sem tarefas abertas.</div>'}</div></div><div class="card"><h3>Estado dos motores</h3>${state.projects.map(p=>`<div style="margin:11px 0"><div style="display:flex;justify-content:space-between;gap:10px"><b>${esc(p.name)}</b><span class="mini">${progress(p.id)}%</span></div><div class="progress" style="margin-top:6px"><i style="width:${progress(p.id)}%;background:linear-gradient(90deg,${p.color},var(--cyan))"></i></div></div>`).join('')}</div></div>`+
+ `<div class="section"><h2>Radar recente</h2><span>${state.radarUpdatedAt?'Atualizado '+new Date(state.radarUpdatedAt).toLocaleString('pt-PT'):'Ainda não atualizado'}</span></div><div class="radar">${state.radar.filter(r=>!state.radarIgnored.includes(r.id)).slice(0,4).map(radarCard).join('')||'<div class="empty">Liga a cloud e atualiza o Radar para receber oportunidades recentes.</div>'}</div>`;
+}
+function taskRow(t){const p=project(t.projectId);return `<div class="item ${t.status==='done'?'done':''}"><input class="check" type="checkbox" ${t.status==='done'?'checked':''} onchange="app.toggleTask('${t.id}')"><div class="grow"><div class="title">${esc(t.title)}</div><div class="meta"><span style="color:${p.color}">${esc(p.name)}</span> · ${fmtDate(t.due)} · ${weekLabel(t.due)}</div></div><button class="btn small" onclick="app.editTask('${t.id}')">Editar</button></div>`}
+
+function renderSteps(){
+ const pid=state.settings.activeProject||'blueon'; const p=project(pid); const steps=state.steps[pid]||[];
+ document.getElementById('steps').innerHTML=hero('STEP BY STEP','Faz uma coisa de cada vez.','Cada etapa desbloqueia a seguinte e cria automaticamente a tarefa no calendário.')+
+ `<div class="quick" style="margin-top:12px">${state.projects.map(x=>`<button onclick="app.setActiveProject('${x.id}')" style="border-color:${x.id===pid?x.color:'var(--line)'}"><b>${esc(x.name)}</b><small>${progress(x.id)}% concluído</small></button>`).join('')}</div>`+
+ `<div class="section"><h2>${esc(p.name)}</h2><span>${progress(pid)}% concluído</span></div><div class="grid g2">${steps.map(s=>`<div class="card step ${s.status}"><div class="num">ETAPA ${s.n} · ${fmtDate(s.due)}</div><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p><div class="do"><b>FAZER:</b> ${esc(s.do)}</div><div class="dont"><b>NÃO FAZER:</b> ${esc(s.dont)}</div><div style="margin-top:10px">${s.status==='done'?'<span class="pill good">Concluída</span>':s.status==='locked'?'<span class="pill">Bloqueada</span>':`<button class="btn primary" onclick="app.completeStep('${pid}','${s.id}')">Concluir etapa</button>`}</div></div>`).join('')}</div>`;
+}
+
+function renderRadar(){
+ const cats=[...new Set(state.radar.map(x=>x.category))];
+ document.getElementById('radar').innerHTML=hero('RADAR DE MERCADO','O que mudou lá fora?','Ao abrir a app, o radar procura informação recente. Tu transformas sinais úteis em oportunidades, conteúdo ou tarefas.',`<button class="btn primary" onclick="app.refreshRadar()">Atualizar agora</button>`)+
+ `<div class="section"><h2>Sinais recentes</h2><span>${state.radar.length} itens · ${cats.length} áreas</span></div><div class="radar">${state.radar.filter(r=>!state.radarIgnored.includes(r.id)).map(radarCard).join('')||'<div class="empty">Sem dados. Liga a cloud e carrega em “Atualizar agora”.</div>'}</div>`;
+}
+function radarCard(r){return `<div class="radaritem"><span class="score">${r.score}</span><span class="pill">${esc(r.category)}</span><h4>${esc(r.title)}</h4><div class="src">${esc(r.source||'Fonte')} · ${r.published?new Date(r.published).toLocaleDateString('pt-PT'):''}</div><div class="actions"><button class="btn small primary" onclick="app.radarToOpp('${r.id}')">Oportunidade</button><button class="btn small" onclick="app.radarToContent('${r.id}')">Conteúdo</button><button class="btn small ghost" onclick="app.ignoreRadar('${r.id}')">Ignorar</button><a class="btn small" href="${esc(r.url)}" target="_blank" rel="noopener">Abrir</a></div></div>`}
+
+function renderOpps(){
+ const statuses=[['inbox','Inbox'],['testing','A testar'],['building','A construir'],['live','Live']];
+ document.getElementById('opportunities').innerHTML=hero('OPORTUNIDADES','Ideia não é projeto. Primeiro passa pelo funil.','Uma oportunidade aprovada cria automaticamente tarefas, calendário e sugestões de distribuição.',`<button class="btn primary" onclick="app.newOpp()">+ Oportunidade</button>`)+
+ `<div class="kanban" style="margin-top:12px">${statuses.map(([key,label])=>`<div class="col"><h4>${label}</h4>${state.opportunities.filter(o=>o.status===key).map(o=>`<div class="ticket"><span class="pill ${o.score>=80?'good':o.score>=65?'warn':''}">${o.score||'—'}/100</span><h5>${esc(o.title)}</h5><div class="tmeta">${esc(o.domain)} · ${esc(o.next||'definir próximo teste')}</div><div class="tacts"><button class="btn small" onclick="app.advanceOpp('${o.id}')">Avançar</button><button class="btn small ghost" onclick="app.killOpp('${o.id}')">Kill</button></div></div>`).join('')||'<div class="mini">Vazio</div>'}</div>`).join('')}</div>`;
+}
+
+function renderCalendar(){
+ const tasks=[...state.tasks].filter(t=>t.status!=='done').sort((a,b)=>a.due.localeCompare(b.due));const grouped={};tasks.forEach(t=>(grouped[t.due]??=[]).push(t));
+ document.getElementById('calendar').innerHTML=hero('CALENDÁRIO','O sistema transforma etapas em datas.','Quando uma oportunidade ou conteúdo nasce, as tarefas entram aqui automaticamente.',`<button class="btn primary" onclick="app.newTask()">+ Tarefa</button>`)+
+ `<div class="section"><h2>Agenda</h2><span>${tasks.length} tarefas abertas</span></div><div class="calendar">${Object.entries(grouped).map(([d,arr])=>`<div class="day"><div class="date">${fmtDate(d)}<div class="mini">${weekLabel(d)}</div></div><div class="dayitems">${arr.map(t=>`<div class="event"><div><b>${esc(t.title)}</b><br><small>${esc(project(t.projectId).name)}</small></div><button class="btn small" onclick="app.toggleTask('${t.id}')">Feito</button></div>`).join('')}</div></div>`).join('')||'<div class="empty">Sem tarefas abertas.</div>'}</div>`;
+}
+
+function renderContent(){
+ document.getElementById('content').innerHTML=hero('CONTENT ENGINE','Uma ideia deve gerar vários ativos.','Escolhe o ativo principal. O sistema sugere automaticamente Reel, Story, Post, Short ou YouTube conforme objetivo e profundidade.',`<button class="btn primary" onclick="app.newContent()">+ Criar pacote</button>`)+
+ `<div class="section"><h2>Pacotes</h2><span>1 → muitos</span></div><div class="grid g3">${state.content.map(c=>contentCard(c)).join('')||'<div class="empty">Ainda não criaste nenhum pacote de conteúdo.</div>'}</div>`+
+ `<div class="section"><h2>Regras de formato</h2></div><div class="grid g4"><div class="card"><h3>You
