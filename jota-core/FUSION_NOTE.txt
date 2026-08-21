@@ -1,0 +1,1 @@
+JOTA CORE V3: fusão do JOTA CORE com o antigo JOTA Wealth & Freedom OS V2. O ficheiro principal passa a ser monolítico em jota-core/index.html.
