@@ -1,0 +1,96 @@
+endas.',14],
+  ['Retenção','Medir 4 semanas de utilização e renovação.','Corrigir motivos de abandono.','Não automatizar antes de saber o que funciona.',28]
+ ],
+ fitness:[
+  ['Campanha pertença','Mostrar pessoas, equipa, ambiente e cultura.','Usar “Aqui não és só mais um número”.','Não competir apenas por preço.',1],
+  ['Funil local','Lead → contacto → visita → inscrição.','Registar origem e conversão.','Não deixar leads sem estado.',4],
+  ['Criativos + teste','Criar 3 ângulos e medir.','Testar prova social, ambiente e orientação.','Não mudar tudo ao mesmo tempo.',7]
+ ],
+ pilates:[
+  ['Awareness local','Pilates em Leiria → Blue Pilates.','Criar 3 ângulos visuais premium.','Não misturar com Blue Fitness.',2],
+  ['CTA marcação','Levar interesse a pedido/marcação.','Medir pedidos e marcações.','Não publicar sem objetivo.',6]
+ ],
+ lab3d:[
+  ['Radar de problemas','Encontrar 10 fricções reais.','Observar ginásio/PT/casa/oficina.','Não procurar apenas “coisas fixes para imprimir”.',0],
+  ['Score','Escolher 3 candidatos e pontuar.','Dor, pagar, repetibilidade, margem, segurança.','Não prototipar sem problema real.',3],
+  ['Protótipo','Criar 1 design próprio paramétrico.','Testar medidas, material e tolerância.','Não vender antes do teste real.',7],
+  ['Costing + preço','Calcular custo total e preço.','Material + falhas + máquina + embalagem + taxas + margem.','Não copiar preço do concorrente sem contas.',10],
+  ['Listing + conteúdo','Criar fotos, render, manual e listing.','Digital + POD quando fizer sentido.','Não usar IP duvidosa.',14]
+ ],
+ capital:[
+  ['Auditar playbook','Definir setups e regras existentes.','Identificar A+, A, B e WAIT.','Não forçar trades.',0],
+  ['Shadow Mode','Registar decisões sem dinheiro real.','LONG/SHORT/WAIT + tese + risco + resultado.','Não automatizar execução.',2],
+  ['30–50 decisões','Criar amostra suficiente.','Medir expectancy, PF, drawdown e erros.','Não validar com 3 trades.',14],
+  ['Paper / micro','Só avançar se houver edge.','Custos, spread e regras reais.','Não financiar com reserva familiar.',30]
+ ],
+ creative:[
+  ['Creative Factory interna','Produzir 3 criativos por negócio.','Medir custo, tempo e qualidade.','Não vender serviço externo ainda.',0],
+  ['Router de ferramentas','Comparar outputs por euro/minuto.','Guardar modelo, custo e tentativas.','Não acumular subscrições sem benefício.',5],
+  ['Teste externo','Só se o processo interno for repetível.','Pacote produtizado, preço e limite de revisões.','Não criar outro emprego.',12]
+ ]
+};
+
+function seed(){
+ const start=TODAY();
+ const projects=[
+  {id:'blueon',name:'BlueON',type:'blue',color:'#39c7ee',priority:1},
+  {id:'fitness',name:'Blue Fitness',type:'blue',color:'#0c7be8',priority:2},
+  {id:'pilates',name:'Blue Pilates',type:'blue',color:'#9977ff',priority:3},
+  {id:'lab3d',name:'HULK 3D Lab',type:'asset',color:'#47cf86',priority:4},
+  {id:'creative',name:'AI Creative Factory',type:'asset',color:'#f5bd52',priority:5},
+  {id:'capital',name:'JOTA Capital OS',type:'capital',color:'#f06a72',priority:6}
+ ];
+ const tasks=[]; const steps={};
+ for(const [pid,arr] of Object.entries(STEP_TEMPLATES)){
+  steps[pid]=arr.map((x,i)=>({id:`${pid}-s${i+1}`,projectId:pid,n:i+1,title:x[0],desc:x[1],do:x[2],dont:x[3],due:addDays(x[4],start),status:i===0?'current':'locked'}));
+  tasks.push({id:uid(),projectId:pid,title:arr[0][0],due:addDays(arr[0][4],start),status:'todo',sourceStep:`${pid}-s1`,kind:'step'});
+ }
+ return {version:1,updatedAt:new Date().toISOString(),startDate:start,projects,steps,tasks,opportunities:[],content:[],products3d:[],radar:[],radarUpdatedAt:null,radarIgnored:[],notes:[],metrics:{blueonMrr:0,blueonClients:0,fitnessLeads:0,fitnessSales:0,pilatesLeads:0,pilatesBookings:0,digitalRevenue:0},activity:[],settings:{autoRadar:true,radarHours:6,cloudSync:true,activeProject:'blueon'}};
+}
+let state=loadLocal();
+let session=null;
+let saveTimer=null;
+let activeView='home';
+
+function loadLocal(){try{return JSON.parse(localStorage.getItem(STORE))||seed()}catch{return seed()}}
+function saveLocal(){state.updatedAt=new Date().toISOString();localStorage.setItem(STORE,JSON.stringify(state));queueCloud();}
+function activity(text,kind='system'){state.activity.unshift({id:uid(),text,kind,at:new Date().toISOString()});state.activity=state.activity.slice(0,60)}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1700)}
+
+async function queueCloud(){
+ if(!session||!state.settings.cloudSync)return;
+ clearTimeout(saveTimer); saveTimer=setTimeout(pushCloud,900);
+}
+async function pushCloud(){
+ if(!session)return;
+ setSync('syncing','A sincronizar');
+ const {error}=await supabase.from('venture_os_state').upsert({user_id:session.user.id,payload:state},{onConflict:'user_id'});
+ setSync(error?'error':'ok',error?'Erro cloud':'Cloud ligado');
+}
+async function pullCloud(){
+ if(!session)return;
+ const {data,error}=await supabase.from('venture_os_state').select('payload,updated_at').eq('user_id',session.user.id).maybeSingle();
+ if(error){setSync('error','Erro cloud');return}
+ if(data?.payload){
+   const remote=data.payload; const rt=Date.parse(remote.updatedAt||data.updated_at||0), lt=Date.parse(state.updatedAt||0);
+   if(rt>lt){state=remote;localStorage.setItem(STORE,JSON.stringify(state));toast('Dados atualizados da cloud.');}
+   else await pushCloud();
+ }else await pushCloud();
+ renderAll();
+}
+function setSync(mode,text){const d=document.getElementById('syncDot');d.className='dot'+(mode==='ok'?' ok':mode==='error'?' bad':'');document.getElementById('syncText').textContent=text}
+
+function project(pid){return state.projects.find(p=>p.id===pid)||{name:pid,color:'#39c7ee'}};
+function nextTasks(){return [...state.tasks].filter(t=>t.status!=='done').sort((a,b)=>a.due.localeCompare(b.due)).slice(0,7)}
+function progress(pid){const a=state.steps[pid]||[];return a.length?Math.round(a.filter(s=>s.status==='done').length/a.length*100):0}
+function weekLabel(date){const d=new Date(date+'T12:00:00'), now=new Date();const diff=Math.ceil((d-now)/86400000);return diff<0?'Atrasado':diff===0?'Hoje':diff===1?'Amanhã':`${diff} dias`}
+
+function renderAll(){renderHome();renderSteps();renderRadar();renderOpps();renderCalendar();renderContent();renderBlue();render3D();renderCapital();renderBrain();renderSettings();syncNav()}
+function hero(k,h,p,actions=''){return `<div class="hero"><div class="kicker">${k}</div><h1>${h}</h1><p>${p}</p>${actions?`<div class="heroactions">${actions}</div>`:''}</div>`}
+function metric(label,value,sub,accent='var(--blue)'){return `<div class="card metric" style="--accent:${accent}"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`}
+
+function renderHome(){
+ const due=nextTasks(); const nb=nextBestActions();
+ document.getElementById('home').innerHTML=
+ hero('JOTA CORE · HOJE','Uma app. Um núcleo. Uma próxima ação.','Tudo o que crias numa área atualiza tarefas, calendário, conteúdo e oportunidades nas restantes.',`<button class="btn primary" onclick="app.quickAdd()">+ Criar</button><button class="btn" onclick="app.go('radar')">Ver Radar</button>`) +
+ `<div class="grid g5" style="margin-top:12px">${metric('BlueON MRR',euro(state.metrics.blueonMrr),'recorrência digital','var(--cyan)')}${metric('Tarefas abertas',state.tasks.filter(x=>x.status!=='done').length,'em todo o sistema','var(--amber)')}${metric('Oportunidades',state.opportunities.filter(x=>x.status!=='
