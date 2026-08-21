@@ -1,4 +1,4 @@
-in-top:10px}.score{font-size:11px;font-weight:900;color:#06111d;background:var(--green);padding:4px 7px;border-radius:8px;float:right}
+or:#7792a7}.radaritem .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.score{font-size:11px;font-weight:900;color:#06111d;background:var(--green);padding:4px 7px;border-radius:8px;float:right}
 .kanban{display:grid;grid-template-columns:repeat(4,minmax(230px,1fr));gap:10px;overflow:auto;padding-bottom:4px}.col{background:#071522;border:1px solid #16384f;border-radius:15px;padding:10px;min-height:220px}.col h4{margin:0 0 9px;color:#a9c5d9}.ticket{background:#0c2134;border:1px solid #1b4d70;border-radius:12px;padding:10px;margin-bottom:8px}.ticket h5{margin:0 0 5px;font-size:13px}.ticket .tmeta{font-size:10px;color:#7f99ac}.ticket .tacts{display:flex;gap:5px;margin-top:7px}
 .calendar{display:grid;gap:8px}.day{display:grid;grid-template-columns:130px 1fr;gap:10px}.date{font-weight:900;color:#96b7cf;padding-top:8px}.dayitems{display:grid;gap:6px}.event{background:#091b2b;border:1px solid #173d59;border-radius:12px;padding:9px 11px;display:flex;justify-content:space-between;gap:10px}.event b{font-size:12px}.event small{color:var(--muted)}
 .modalwrap{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.66);backdrop-filter:blur(7px);z-index:100;padding:15px}.modalwrap.show{display:grid}.modal{width:min(720px,100%);max-height:90vh;overflow:auto;background:#0a1a2a;border:1px solid #24516f;border-radius:20px;padding:18px;box-shadow:var(--shadow)}.modal h2{margin-top:0}.modalactions{display:flex;justify-content:flex-end;gap:8px;margin-top:13px}
@@ -65,12 +65,9 @@ in-top:10px}.score{font-size:11px;font-weight:900;color:#06111d;background:var(-
 <div class="modalwrap" id="modalWrap"><div class="modal" id="modal"></div></div>
 <div class="toast" id="toast"></div>
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.57.4';
-
-const SUPABASE_URL='https://vfwkxlcamtcrmdsuxmyz.supabase.co';
-const SUPABASE_KEY='sb_publishable_u47bb62djMLkz2-Ib_1tMg_mjGeu4z1';
-const supabase=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-const STORE='jota_core_v1';
+const HUB_URL='https://vfwkxlcamtcrmdsuxmyz.supabase.co/functions/v1/venture-hub';
+const STORE='jota_core_v2';
+const SYNC_STORE='jota_core_sync_v2';
 const TODAY=()=>new Date().toISOString().slice(0,10);
 const fmtDate=(d)=>new Intl.DateTimeFormat('pt-PT',{day:'2-digit',month:'short'}).format(new Date(d+'T12:00:00'));
 const addDays=(n,base=TODAY())=>{const d=new Date(base+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
@@ -82,4 +79,5 @@ const STEP_TEMPLATES={
   ['Alinhar oferta com Joana','Fechar público, promessa, preço, Founders e limites do Adapt.','Decidir e escrever a oferta em 1 página.','Não construir app final nem adicionar funcionalidades.',0],
   ['Landing + pagamento','Criar uma página simples com CTA pago.','Oferta, prova, FAQ, checkout e onboarding.','Nada de produto gratuito ou funil gigante.',3],
   ['Produção mínima','Criar apenas o necessário para entregar a V0.','Masters mínimas + Quick/Standard/Full + check-in.','Não gravar 100 aulas sem clientes.',7],
-  ['Primeiros clientes','Lançar campanha e captar pagantes.','Medir ativação e utilização.','Não confundir views com v
+  ['Primeiros clientes','Lançar campanha e captar pagantes.','Medir ativação e utilização.','Não confundir views com vendas.',14],
+  ['Retenção','Medir 4 semanas de utilização e renovação.','Corr
