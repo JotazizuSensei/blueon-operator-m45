@@ -1,0 +1,35 @@
+eate3DContent(p){if(state.content.some(c=>c.sourceId===p.id))return;const c=makeContent(p.name,'Vender','Reel','lab3d');c.sourceId=p.id;state.content.push(c);},
+ metric(k,v){state.metrics[k]=Number(v||0);saveLocal();renderAll();},
+ setting(k,v){state.settings[k]=k==='radarHours'?Number(v):v;saveLocal();renderAll();},
+ recompute(){renderAll();toast('Sugestões recalculadas.');},
+ doSuggestion(id){if(id==='blue-step'){this.setActiveProject('blueon');this.go('steps')}else if(id==='overdue')this.go('calendar');else if(id==='radar-op')this.go('radar');else if(id==='content-pack')this.newContent();else if(id==='3d-first')this.new3D();else if(id==='refresh-radar')this.refreshRadar();},
+ createDistributionForOpportunity(o){if(state.content.some(c=>c.sourceId===o.id))return;const c=makeContent(o.title,'Vender',o.domain==='Conteúdo'?'YouTube':'Reel',domainProject(o.domain));c.sourceId=o.id;state.content.push(c);this.scheduleContentTasks(c);},
+ async auth(){if(session){this.go('settings');return}showModal(`<h2>Ligar JOTA CORE à cloud</h2><p class="notice">A app continua a funcionar localmente. Ao entrares, sincroniza estado entre PC e telemóvel e ativa o Radar ao abrir.</p><div class="authbox"><div class="field"><label>Email</label><input id="aemail" type="email" autocomplete="email"></div><div class="field"><label>Password</label><input id="apass" type="password" autocomplete="current-password"></div></div><div id="authMsg" class="mini" style="margin-top:8px"></div><div class="modalactions"><button class="btn" onclick="closeModal()">Cancelar</button><button class="btn" onclick="app.signup()">Criar conta</button><button class="btn primary" onclick="app.login()">Entrar</button></div>`);},
+ async login(){const email=document.getElementById('aemail').value.trim(),password=document.getElementById('apass').value;const {error}=await supabase.auth.signInWithPassword({email,password});document.getElementById('authMsg').textContent=error?error.message:'Ligado.';if(!error){closeModal();toast('Cloud ligada.');}},
+ async signup(){const email=document.getElementById('aemail').value.trim(),password=document.getElementById('apass').value;const {error}=await supabase.auth.signUp({email,password});document.getElementById('authMsg').textContent=error?error.message:'Conta criada. Se for pedido, confirma o email e entra.';},
+ async logout(){await supabase.auth.signOut();session=null;setSync('local','Local');renderAll();},
+ exportData(){const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`JOTA_CORE_BACKUP_${TODAY()}.json`;a.click();URL.revokeObjectURL(a.href);},
+ importData(file){if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);state=x;saveLocal();renderAll();toast('Backup importado.')}catch{toast('Backup inválido.')}};r.readAsText(file);},
+ reset(){if(confirm('Repor o JOTA CORE? Isto apaga apenas os dados locais desta app.')){state=seed();saveLocal();renderAll();}},
+ async maybeAutoRadar(){if(!session||!state.settings.autoRadar)return;const age=state.radarUpdatedAt?(Date.now()-Date.parse(state.radarUpdatedAt))/36e5:999;if(age>=Number(state.settings.radarHours||6))await this.refreshRadar();}
+};
+function domainProject(d){const m={'BlueON':'blueon','Blue Fitness':'fitness','Blue Pilates':'pilates','3D Lab':'lab3d','AI Commerce':'creative','Conteúdo':'creative','Capital':'capital'};return m[d]||'creative'}
+function goalFromCategory(c){if(c?.includes('Conteúdo')||c?.includes('Creator'))return'Awareness';if(c?.includes('3D'))return'Vender';if(c?.includes('Fitness'))return'Educar';return'Gerar leads'}
+function formatFromCategory(c){if(c?.includes('3D'))return'Reel';if(c?.includes('Capital'))return'Carrossel';if(c?.includes('AI'))return'YouTube';return'Reel'}
+function makeContent(title,goal='Awareness',format='Reel',projectId='creative'){
+ const deep=['YouTube','Master/Aula'].includes(format); const derivatives=deep?['Reel','Short','Carrossel','Story','Post','Email/legenda']:format==='Reel'?['Story','Post','Carrossel','Short']:format==='Carrossel'?['Story','Reel','Post']:['Reel','Post'];
+ return {id:uid(),title,goal,primaryFormat:format,projectId,derivatives,createdAt:new Date().toISOString(),scheduled:false};
+}
+function syncNav(){document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===activeView))}
+window.app=app;window.closeModal=closeModal;
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>app.go(b.dataset.view)));
+document.getElementById('authBtn').addEventListener('click',()=>app.auth());
+document.getElementById('refreshRadarTop').addEventListener('click',()=>app.refreshRadar());
+
+supabase.auth.onAuthStateChange(async(_event,s)=>{session=s;document.getElementById('authBtn').textContent=session?'Cloud':'Ligar Cloud';if(session){setSync('ok','Cloud ligado');await pullCloud();setTimeout(()=>app.maybeAutoRadar(),300)}else setSync('local','Local');});
+const {data:{session:initialSession}}=await supabase.auth.getSession();session=initialSession;if(session){document.getElementById('authBtn').textContent='Cloud';setSync('ok','Cloud ligado');await pullCloud();setTimeout(()=>app.maybeAutoRadar(),300)}else{setSync('local','Local');renderAll();}
+
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.warn));
+</script>
+</body>
+</html>
