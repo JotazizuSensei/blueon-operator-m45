@@ -1,5 +1,4 @@
-endas.',14],
-  ['Retenção','Medir 4 semanas de utilização e renovação.','Corrigir motivos de abandono.','Não automatizar antes de saber o que funciona.',28]
+igir motivos de abandono.','Não automatizar antes de saber o que funciona.',28]
  ],
  fitness:[
   ['Campanha pertença','Mostrar pessoas, equipa, ambiente e cultura.','Usar “Aqui não és só mais um número”.','Não competir apenas por preço.',1],
@@ -49,34 +48,37 @@ function seed(){
 }
 let state=loadLocal();
 let session=null;
+let syncCreds=loadSyncCreds();
 let saveTimer=null;
 let activeView='home';
 
 function loadLocal(){try{return JSON.parse(localStorage.getItem(STORE))||seed()}catch{return seed()}}
+function loadSyncCreds(){try{return JSON.parse(localStorage.getItem(SYNC_STORE))||null}catch{return null}}
+function randomToken(bytes=24){const a=new Uint8Array(bytes);crypto.getRandomValues(a);return btoa(String.fromCharCode(...a)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+async function hub(action,extra={}){if(!syncCreds&&action!=='create')throw new Error('not_paired');const body={action,...(syncCreds||{}),...extra};const r=await fetch(HUB_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok||j.error)throw new Error(j.error||('HTTP '+r.status));return j}
 function saveLocal(){state.updatedAt=new Date().toISOString();localStorage.setItem(STORE,JSON.stringify(state));queueCloud();}
 function activity(text,kind='system'){state.activity.unshift({id:uid(),text,kind,at:new Date().toISOString()});state.activity=state.activity.slice(0,60)}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1700)}
 
 async function queueCloud(){
- if(!session||!state.settings.cloudSync)return;
+ if(!syncCreds||!state.settings.cloudSync)return;
  clearTimeout(saveTimer); saveTimer=setTimeout(pushCloud,900);
 }
 async function pushCloud(){
- if(!session)return;
+ if(!syncCreds)return;
  setSync('syncing','A sincronizar');
- const {error}=await supabase.from('venture_os_state').upsert({user_id:session.user.id,payload:state},{onConflict:'user_id'});
- setSync(error?'error':'ok',error?'Erro cloud':'Cloud ligado');
+ try{await hub('push',{payload:state});setSync('ok','Cloud ligada')}catch(e){console.error(e);setSync('error','Erro cloud')}
 }
 async function pullCloud(){
- if(!session)return;
- const {data,error}=await supabase.from('venture_os_state').select('payload,updated_at').eq('user_id',session.user.id).maybeSingle();
- if(error){setSync('error','Erro cloud');return}
- if(data?.payload){
-   const remote=data.payload; const rt=Date.parse(remote.updatedAt||data.updated_at||0), lt=Date.parse(state.updatedAt||0);
-   if(rt>lt){state=remote;localStorage.setItem(STORE,JSON.stringify(state));toast('Dados atualizados da cloud.');}
+ if(!syncCreds)return;
+ try{
+   setSync('syncing','A sincronizar');
+   const data=await hub('pull');
+   const remote=data.payload||{}; const rt=Date.parse(remote.updatedAt||data.updatedAt||0), lt=Date.parse(state.updatedAt||0);
+   if(remote.version && rt>lt){state=remote;localStorage.setItem(STORE,JSON.stringify(state));toast('Dados atualizados da cloud.');}
    else await pushCloud();
- }else await pushCloud();
- renderAll();
+   setSync('ok','Cloud ligada');renderAll();
+ }catch(e){console.error(e);setSync('error','Erro cloud')}
 }
 function setSync(mode,text){const d=document.getElementById('syncDot');d.className='dot'+(mode==='ok'?' ok':mode==='error'?' bad':'');document.getElementById('syncText').textContent=text}
 
@@ -92,5 +94,4 @@ function metric(label,value,sub,accent='var(--blue)'){return `<div class="card m
 function renderHome(){
  const due=nextTasks(); const nb=nextBestActions();
  document.getElementById('home').innerHTML=
- hero('JOTA CORE · HOJE','Uma app. Um núcleo. Uma próxima ação.','Tudo o que crias numa área atualiza tarefas, calendário, conteúdo e oportunidades nas restantes.',`<button class="btn primary" onclick="app.quickAdd()">+ Criar</button><button class="btn" onclick="app.go('radar')">Ver Radar</button>`) +
- `<div class="grid g5" style="margin-top:12px">${metric('BlueON MRR',euro(state.metrics.blueonMrr),'recorrência digital','var(--cyan)')}${metric('Tarefas abertas',state.tasks.filter(x=>x.status!=='done').length,'em todo o sistema','var(--amber)')}${metric('Oportunidades',state.opportunities.filter(x=>x.status!=='
+ hero('JOTA CORE · HOJE','Um
