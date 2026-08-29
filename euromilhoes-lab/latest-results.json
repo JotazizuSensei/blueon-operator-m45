@@ -1,15 +1,15 @@
 {
   "em": {
-    "date": "2026-08-25",
+    "date": "2026-08-28",
     "numbers": [
-      8,
-      16,
-      30,
-      47,
-      48
+      7,
+      14,
+      28,
+      42,
+      45
     ],
     "extras": [
-      4,
+      6,
       9
     ],
     "source": "Jogos Santa Casa — resultado oficial",
@@ -39,5 +39,5 @@
     "source": "Jogos Santa Casa — resultado oficial",
     "official": true
   },
-  "updatedAt": "2026-08-28T19:26:47.323251+00:00"
+  "updatedAt": "2026-08-29T02:01:58.392909+00:00"
 }
