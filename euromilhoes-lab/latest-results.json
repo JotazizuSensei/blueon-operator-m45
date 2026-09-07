@@ -17,17 +17,17 @@
     "official": true
   },
   "ed": {
-    "date": "2026-09-03",
+    "date": "2026-09-07",
     "numbers": [
-      8,
-      18,
-      20,
-      22,
-      33,
-      40
+      1,
+      3,
+      21,
+      24,
+      28,
+      32
     ],
     "extras": [
-      1
+      5
     ],
     "source": "Jogos Santa Casa — resultado oficial",
     "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams",
@@ -39,5 +39,5 @@
     "source": "Jogos Santa Casa — resultado oficial",
     "official": true
   },
-  "updatedAt": "2026-09-05T11:16:34.100946+00:00"
+  "updatedAt": "2026-09-07T21:56:48.176704+00:00"
 }
