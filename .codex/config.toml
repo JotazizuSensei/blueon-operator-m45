@@ -16,3 +16,6 @@ default_subagent_reasoning_effort = "low"
 
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
+
+[plugins."hulk-operator@hulk-local"]
+enabled = true
