@@ -8,7 +8,7 @@
       "name": "hulk-operator",
       "source": {
         "source": "local",
-        "path": "../../../plugins/hulk-operator"
+        "path": "../../plugins/hulk-operator"
       },
       "policy": {
         "installation": "AVAILABLE",
