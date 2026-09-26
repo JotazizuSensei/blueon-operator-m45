@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "hulk-operator",
+  "version": "1.0.0",
+  "description": "Shared HULK routing, quota protection and handoff workflows for ChatGPT Work and Codex."
+}
