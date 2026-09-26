@@ -1,0 +1,97 @@
+version: 1
+updated: 2026-09-26
+
+principle: cheapest_capable_model_first
+
+aliases:
+  FAST_MODEL:
+    provider: openai
+    model: gpt-6-luna
+    reasoning: low
+    use_for:
+      - extraction
+      - formatting
+      - tagging
+      - simple transforms
+      - repetitive work
+      - low-risk subagents
+
+  VALUE_MODEL:
+    provider: openai
+    model: gpt-6-sol
+    reasoning: low
+    use_for:
+      - normal coding
+      - normal debugging
+      - analysis
+      - documentation
+      - agentic work
+
+  REASONING_MODEL:
+    provider: openai
+    model: gpt-5.6-sol
+    reasoning: medium
+    use_for:
+      - difficult reasoning
+      - architecture review
+      - persistent debugging
+
+  PREMIUM_MODEL:
+    provider: openai
+    model: gpt-6-astra
+    reasoning: medium
+    use_for:
+      - hardest end-to-end tasks
+      - final escalation only
+
+  CODING_AGENT:
+    provider: openai
+    model: codex
+    reasoning: low
+    use_for:
+      - real repository execution
+      - terminal
+      - tests
+      - builds
+      - multi-file edits
+
+routing:
+  routine:
+    primary: FAST_MODEL
+    fallback: VALUE_MODEL
+    max_attempts: 2
+  normal:
+    primary: VALUE_MODEL
+    fallback: REASONING_MODEL
+    max_attempts: 2
+  difficult:
+    primary: REASONING_MODEL
+    fallback: PREMIUM_MODEL
+    max_attempts: 2
+    independent_review: true
+  repo_execution:
+    primary: CODING_AGENT
+    fallback: VALUE_MODEL
+    max_attempts: 2
+  critical:
+    primary: REASONING_MODEL
+    fallback: PREMIUM_MODEL
+    max_attempts: 1
+    independent_review: true
+    human_approval: true
+
+quota:
+  protect_work_codex_shared_pool: true
+  fast_mode_default: false
+  premium_model_default: false
+  targeted_context_only: true
+
+budget:
+  api_monthly_limit_usd: 25
+  warn_percent: [70, 90]
+  stop_noncritical_at_percent: 100
+
+telemetry:
+  enabled: true
+  backend: supabase
+  edge_function: hulk-ai-router
