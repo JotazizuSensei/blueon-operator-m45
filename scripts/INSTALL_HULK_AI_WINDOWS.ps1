@@ -40,6 +40,16 @@ Copy-Item (Join-Path $RepoRoot ".codex\config.toml") $UserConfig -Force
 
 [Environment]::SetEnvironmentVariable("HULK_HOME", $HulkHome, "User")
 
+# Track the HULK plugin marketplace so Work/Codex can share the same reusable skills.
+if (Get-Command codex -ErrorAction SilentlyContinue) {
+    try {
+        codex plugin marketplace add JotazizuSensei/blueon-operator-m45 --ref main
+        Write-Host "HULK plugin marketplace added."
+    } catch {
+        Write-Warning "Could not add HULK marketplace automatically. Run: codex plugin marketplace add JotazizuSensei/blueon-operator-m45 --ref main"
+    }
+}
+
 Write-Host ""
 Write-Host "HULK lean Codex defaults installed."
 Write-Host "Backups, if any, are in $CodexHome with timestamp $Timestamp."
@@ -48,5 +58,7 @@ Write-Host "Next checks:"
 Write-Host "  codex --version"
 Write-Host "  codex --login"
 Write-Host "  then in Codex: /status"
+Write-Host "  then in Codex: /plugins -> install HULK Operator if it is not already installed"
 Write-Host ""
+Write-Host "Restart the ChatGPT desktop app after plugin installation/marketplace changes."
 Write-Host "API fallback activates only after OPENAI_API_KEY is configured."
