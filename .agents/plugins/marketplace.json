@@ -1,14 +1,14 @@
 {
   "name": "hulk-local",
+  "interface": {
+    "displayName": "HULK Local"
+  },
   "plugins": [
     {
       "name": "hulk-operator",
-      "interface": {
-        "displayName": "HULK Operator"
-      },
       "source": {
         "source": "local",
-        "path": "./plugins/hulk-operator"
+        "path": "../../../plugins/hulk-operator"
       },
       "policy": {
         "installation": "AVAILABLE",
