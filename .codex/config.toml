@@ -1,0 +1,18 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+# Balanced default: strong enough for normal engineering without spending premium quota by default.
+model = "gpt-6-sol"
+model_reasoning_effort = "low"
+model_reasoning_summary = "concise"
+
+# Autonomous inside the workspace, explicit approval beyond it.
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+[agents]
+enabled = true
+default_subagent_model = "gpt-6-luna"
+default_subagent_reasoning_effort = "low"
+
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
