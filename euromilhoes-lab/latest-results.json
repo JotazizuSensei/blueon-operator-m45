@@ -1,16 +1,16 @@
 {
   "em": {
-    "date": "2026-09-25",
+    "date": "2026-09-29",
     "numbers": [
-      11,
+      4,
+      7,
       12,
-      15,
-      38,
-      49
+      31,
+      44
     ],
     "extras": [
-      10,
-      12
+      8,
+      11
     ],
     "source": "Jogos Santa Casa — resultado oficial",
     "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/euromilhoes",
@@ -39,5 +39,5 @@
     "source": "Jogos Santa Casa — resultado oficial",
     "official": true
   },
-  "updatedAt": "2026-09-29T14:04:58.114114+00:00"
+  "updatedAt": "2026-09-29T22:54:52.968341+00:00"
 }
