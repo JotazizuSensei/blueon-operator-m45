@@ -17,14 +17,14 @@
     "official": true
   },
   "ed": {
-    "date": "2026-09-28",
+    "date": "2026-10-01",
     "numbers": [
-      2,
-      7,
+      6,
       9,
-      17,
-      18,
-      30
+      12,
+      21,
+      36,
+      37
     ],
     "extras": [
       3
@@ -39,5 +39,5 @@
     "source": "Jogos Santa Casa — resultado oficial",
     "official": true
   },
-  "updatedAt": "2026-09-30T13:45:29.181201+00:00"
+  "updatedAt": "2026-10-01T23:03:59.260411+00:00"
 }
