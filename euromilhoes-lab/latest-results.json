@@ -34,10 +34,11 @@
     "official": true
   },
   "m1": {
-    "date": "2026-07-31",
-    "code": "NFN37781",
+    "date": "2026-09-25",
+    "code": "PTM09893",
     "source": "Jogos Santa Casa — resultado oficial",
+    "sourceUrl": "https://www.jogossantacasa.pt/web/SCCartazResult/m1lhao",
     "official": true
   },
-  "updatedAt": "2026-10-06T00:43:37.116447+00:00"
+  "updatedAt": "2026-10-06T09:56:00+01:00"
 }
