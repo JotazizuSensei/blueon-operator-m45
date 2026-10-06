@@ -50,11 +50,13 @@ def parse_m1()->dict|None:
     try:t=text(fetch(M1_URL))
     except Exception as exc:
         print('AVISO_M1_FETCH',repr(exc));return None
-    m=re.search(r'Data do Sorteio\s*-\s*(\d{2})/(\d{2})/(\d{4}).{0,900}?1\.?º Pr[eé]mio\s+([A-Z]{3}\s*\d{5})',t,re.I)
-    if not m:return None
-    day,month,year=map(int,m.groups()[:3]);code=re.sub(r'\s+','',m.group(4)).upper()
+    # O portal pode devolver caracteres acentuados com codificação inconsistente.
+    # Ancoramos na data e procuramos diretamente o primeiro código M1lhão válido.
+    m=re.search(r'Data do Sorteio\s*-\s*(\d{2})/(\d{2})/(\d{4}).{0,1800}?\b([A-Z]{3})\s*(\d{5})\b',t,re.I)
+    if not m:
+        print('AVISO_M1_PARSE',t[:900]);return None
+    day,month,year=map(int,m.groups()[:3]);code=(m.group(4)+m.group(5)).upper()
     return {'date':dt.date(year,month,day).isoformat(),'code':code,'source':'Jogos Santa Casa — resultado oficial','sourceUrl':M1_URL,'official':True}
-
 def load(path:Path)->dict:
     try:return json.loads(path.read_text(encoding='utf-8'))
     except Exception:return {}
