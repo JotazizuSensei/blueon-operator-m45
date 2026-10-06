@@ -1,4 +1,4 @@
-const VERSION='eurolab-v5.1.0';
+const VERSION='eurolab-v5.2.0';
 const CACHE=`${VERSION}-static`;
 const STATIC=['index.html','v5.css','v5-mobile.css','app-v5.js','v5-extensions.js','manifest.webmanifest','icon-192.png','icon-512.png'];
 self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(async cache=>{for(const asset of STATIC){try{const r=await fetch(`${asset}?v=${VERSION}`,{cache:'no-store'});if(r.ok)await cache.put(asset,r.clone())}catch{}}}))});
