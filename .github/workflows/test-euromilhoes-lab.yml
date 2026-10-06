@@ -39,7 +39,7 @@ jobs:
           assert len(manifest['icons'])>=2
           assert results['em']['date'] >= '2026-08-07'
           assert results['ed']['date'] >= '2026-08-10'
-          assert results['m1']['date'] == '2026-07-31'
+          assert results['m1']['date'] >= '2026-09-25'
           html=(p/'index.html').read_text()
           assert 'Euro Lab' in html
           assert 'EuroDreams' in html
@@ -49,7 +49,7 @@ jobs:
           assert 'm1List' in html
           for asset in ['v5.css','v5-mobile.css','app-v5.js','v5-extensions.js','sw.js','manifest.webmanifest','icon-192.png','icon-512.png','latest-results.json']:
               assert (p/asset).is_file() and (p/asset).stat().st_size>0, asset
-          print('EURO_LAB_51_STATIC_TESTS_OK')
+          print('EURO_LAB_52_STATIC_TESTS_OK')
           PY
 
       - name: Smoke test HTTP
