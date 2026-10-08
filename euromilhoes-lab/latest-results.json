@@ -17,17 +17,17 @@
     "official": true
   },
   "ed": {
-    "date": "2026-10-05",
+    "date": "2026-10-08",
     "numbers": [
-      3,
       6,
-      16,
-      24,
-      29,
-      40
+      13,
+      20,
+      27,
+      35,
+      38
     ],
     "extras": [
-      2
+      4
     ],
     "source": "Jogos Santa Casa — resultado oficial",
     "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams",
@@ -40,5 +40,5 @@
     "sourceUrl": "https://www.jogossantacasa.pt/web/SCCartazResult/m1lhao",
     "official": true
   },
-  "updatedAt": "2026-10-07T14:31:33.453178+00:00"
+  "updatedAt": "2026-10-08T23:42:22.157997+00:00"
 }
