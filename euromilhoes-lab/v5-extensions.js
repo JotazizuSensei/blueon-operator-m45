@@ -50,8 +50,8 @@ function wire(){
  $('#manualGame')?.addEventListener('change',setManualHint);
  $('#analysisGame')?.addEventListener('change',()=>setTimeout(renderLatestEuroDreamsStats,0));
  if($('#manualDate')&&!$('#manualDate').value)$('#manualDate').value=new Date().toISOString().slice(0,10);
- if($('#version'))$('#version').textContent='5.1.0';
- const s=load();if(s){s.version='5.1.0';save(s)}
+ if($('#version'))$('#version').textContent='6.0.0';
+ const s=load();if(s){s.version='6.0.0';save(s)}
  setManualHint();showKnownCompleteness();setTimeout(renderLatestEuroDreamsStats,0);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);else wire();
