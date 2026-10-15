@@ -1,0 +1,11 @@
+{
+ "schema": 1,
+ "asOf": null,
+ "source": "A aguardar ligação a uma fonte oficial fiável",
+ "sourceUrl": "https://www.jogossantacasa.pt/",
+ "jackpots": {
+  "eurodreams": null,
+  "euromillions": null
+ },
+ "draws": []
+}
