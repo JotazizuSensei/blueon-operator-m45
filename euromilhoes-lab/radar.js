@@ -3,12 +3,12 @@
  */
 (function(){'use strict';
 const Engine=window.EuroRadarEngine;if(!Engine)return;
-const K='eurolab.radar.v6',V='6.0.0';
+const K='eurolab.radar.v6',V='6.1.0';
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const EUR=n=>new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n||0);
 const fmt=n=>new Intl.NumberFormat('pt-PT').format(n||0);
 const dte=s=>s?new Date(s+'T12:00:00Z').toLocaleDateString('pt-PT',{timeZone:'UTC'}):'—';
-function localDay(){let p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Lisbon',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());let get=k=>p.find(x=>x.type===k)?.value;return `${get('year')}-${get('month')}-${get('day')}`;}
+function localDay(){let p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Lisbon',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',hourCycle:'h23'}).formatToParts(new Date());let get=k=>p.find(x=>x.type===k)?.value,d=new Date(`${get('year')}-${get('month')}-${get('day')}T12:00:00Z`);if(Number(get('hour'))>=19)d.setUTCDate(d.getUTCDate()+1);return d.toISOString().slice(0,10);}
 function getState(){try{let v=JSON.parse(localStorage.getItem(K));if(v&&v.schema===6)return v;}catch{}return {schema:6,history:[],jackpots:{euromillions:null,eurodreams:null},prefs:{notifyRadar:true,notifyJackpot:true,jackpotFloor:70,noise:false},notified:{},logs:[],last:null,feed:null};}
 let R=getState(),analysis=null,analyzing=false,periodic=null;
 function store(){localStorage.setItem(K,JSON.stringify(R));}
