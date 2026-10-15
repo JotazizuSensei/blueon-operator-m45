@@ -1,11 +1,60 @@
 {
- "schema": 1,
- "asOf": null,
- "source": "A aguardar ligação a uma fonte oficial fiável",
- "sourceUrl": "https://www.jogossantacasa.pt/",
- "jackpots": {
-  "eurodreams": null,
-  "euromillions": null
- },
- "draws": []
+  "schema": 1,
+  "asOf": "2026-10-15T11:04:23.260Z",
+  "source": "Jogos Santa Casa — Jogos e Jackpots (15/10/2026)",
+  "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+  "jackpots": {
+    "eurodreams": {
+      "amount": 50000,
+      "drawDate": "2026-10-15",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+      "verifiedAt": "2026-10-15T11:04:23.260Z",
+      "kind": "mensal durante 30 anos; campanha especial"
+    },
+    "euromillions": {
+      "amount": 49000000,
+      "drawDate": "2026-10-16",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+      "verifiedAt": "2026-10-15T11:04:23.260Z",
+      "kind": "jackpot anunciado; montante previsional"
+    }
+  },
+  "draws": [
+    {
+      "game": "eurodreams",
+      "date": "2026-10-12",
+      "numbers": [
+        3,
+        4,
+        6,
+        19,
+        30,
+        36
+      ],
+      "special": [
+        2
+      ],
+      "official": true,
+      "source": "Jogos Santa Casa",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/"
+    },
+    {
+      "game": "euromillions",
+      "date": "2026-10-13",
+      "numbers": [
+        21,
+        23,
+        39,
+        44,
+        49
+      ],
+      "special": [
+        4,
+        11
+      ],
+      "official": true,
+      "source": "Jogos Santa Casa",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/"
+    }
+  ]
 }
