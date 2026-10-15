@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const E=window.EuroRadarEngine,KEY='eurolab.radar.v6',GAME={eurodreams:'EuroDreams',euromillions:'Euromilhões'};
 const el=id=>document.getElementById(id);
-const localToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Lisbon',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const localToday=()=>{const now=new Date(),p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Lisbon',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',hourCycle:'h23'}).formatToParts(now),get=k=>p.find(x=>x.type===k)?.value;let d=new Date(get('year')+'-'+get('month')+'-'+get('day')+'T12:00:00Z');if(Number(get('hour'))>=19)d.setUTCDate(d.getUTCDate()+1);return d.toISOString().slice(0,10);};
 const prettyDate=s=>s?new Date(s+'T12:00:00Z').toLocaleDateString('pt-PT',{day:'2-digit',month:'long',year:'numeric',timeZone:'UTC'}):'—';
 const currency=n=>new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
 const safe=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')||{}}catch{return {}}};
