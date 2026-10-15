@@ -35,11 +35,11 @@ function boot(){const root=document.createElement('div');root.id='eurolabSimple'
 <button id="simpleTabGen" type="button" role="tab" aria-controls="simGenerate" aria-selected="true">Gerar chave</button>
 <button id="simpleTabRad" type="button" role="tab" aria-controls="simRadar" aria-selected="false">SUPER RADAR</button></div>
 <section id="simGenerate" class="simp-card" role="tabpanel" aria-labelledby="simpleTabGen">
-<p class="simp-kicker">GERADOR</p><h2 class="simp-h2">A sua próxima chave.</h2>
+<p class="simp-kicker">GERADOR</p><h2 class="simp-h2">A tua próxima chave.</h2>
 <p class="simp-desc">Escolha o jogo e gere uma combinação válida em segundos.</p>
 <label class="simp-label" for="simpleGame">Jogo</label>
 <select id="simpleGame"><option value="eurodreams">EuroDreams — 6 números + Sonho</option><option value="euromillions">Euromilhões — 5 números + 2 estrelas</option></select>
-<button id="simpGenerateBtn" class="simp-primary" type="button">Gerar chave</button>
+<button id="simpGenerateBtn" class="simp-primary" type="button">Gerar chave</button><p class="simp-footer" style="margin:13px 0 0;text-align:center">Preferes pedir-me uma combinação? <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" style="color:#86caff">Abre o ChatGPT</a>.</p>
 <div id="simpGenResult" class="simp-result" aria-live="polite" hidden>
 <div id="simpGenLabel" class="simp-label"></div><div id="simpleNumbers" class="simp-ballrow"></div>
 <button id="simpCopy" class="simp-smallbutton" type="button">Copiar chave</button>
