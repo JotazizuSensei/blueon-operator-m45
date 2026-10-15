@@ -1,0 +1,53 @@
+/* EuroLab 6.1 — interface mínima. Motor e dados legados continuam invisíveis. */
+:root{color-scheme:dark}
+html,body{min-height:100%;margin:0}
+body{background:#07111d;color:#f4f7fb;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body>.shell{display:none!important}
+#eurolabSimple{display:block;min-height:100vh;min-height:100dvh;box-sizing:border-box;padding:clamp(19px,4vw,45px) 18px 48px;background:radial-gradient(ellipse at 50% -20%,#164b713d 0,transparent 55%),#07111d}
+#eurolabSimple *{box-sizing:border-box}
+#eurolabSimple .simp-inner{width:min(100%,680px);margin:auto}
+#eurolabSimple .simp-head{display:flex;align-items:center;gap:12px;margin:0 0 35px}
+#eurolabSimple .simp-symbol{width:46px;height:46px;display:grid;place-items:center;background:linear-gradient(135deg,#4fc8ff,#8c80ff);color:#07111d;font-weight:950;font-size:21px;border-radius:15px}
+#eurolabSimple .simp-title{font-size:22px;font-weight:850;letter-spacing:-.04em;margin:0;line-height:1.1}
+#eurolabSimple .simp-sub{font-size:12px;color:#98aabd;margin-top:5px}
+#eurolabSimple .simp-segments{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:5px;background:#121f30;border:1px solid #294259;border-radius:17px;margin-bottom:18px}
+#eurolabSimple button,#eurolabSimple select{font:inherit}
+#eurolabSimple .simp-segments button{color:#a3b5c8;border:0;cursor:pointer;border-radius:12px;background:transparent;padding:15px 8px;font-size:14px;font-weight:750;min-height:51px}
+#eurolabSimple .simp-segments button[aria-selected=true]{background:linear-gradient(130deg,#2d7bc4,#4964b4);color:white;box-shadow:0 6px 20px #08101b55}
+#eurolabSimple .simp-card{background:linear-gradient(165deg,#111f30,#0d1928);border:1px solid #2a4058;border-radius:24px;padding:clamp(20px,5vw,31px);box-shadow:0 14px 50px #00000025}
+#eurolabSimple .simp-kicker{margin:0 0 8px;color:#75c8ff;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:11px}
+#eurolabSimple .simp-h2{font-size:clamp(25px,4vw,32px);letter-spacing:-.05em;margin:0 0 10px;font-weight:850;line-height:1.14}
+#eurolabSimple .simp-desc{color:#9dafc1;font-size:14px;line-height:1.6;margin:0 0 24px}
+#eurolabSimple .simp-label{display:block;color:#adc0d2;font-size:12px;margin-bottom:9px;font-weight:750}
+#eurolabSimple select{display:block;appearance:none;background:#12283c;color:#f6fcff;border:1px solid #3a5870;border-radius:13px;width:100%;padding:16px 18px;font-weight:750;font-size:16px;cursor:pointer;outline:none}
+#eurolabSimple select:focus-visible,#eurolabSimple button:focus-visible,#eurolabSimple a:focus-visible{outline:3px solid #77cfff;outline-offset:3px}
+#eurolabSimple .simp-primary{width:100%;background:linear-gradient(105deg,#30b3fa,#4485ef);border:0;color:#06121d;border-radius:14px;font-weight:900;padding:17px 14px;min-height:56px;cursor:pointer;margin-top:16px;box-shadow:0 8px 24px #147ecb29;font-size:15px}
+#eurolabSimple button:hover{filter:brightness(1.12)}
+#eurolabSimple button:disabled{opacity:.55;cursor:not-allowed}
+#eurolabSimple .simp-result{margin-top:23px;padding-top:21px;border-top:1px solid #284056}
+#eurolabSimple .simp-result[hidden],#eurolabSimple [hidden]{display:none!important}
+#eurolabSimple .simp-ballrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0}
+#eurolabSimple .simp-ball{width:49px;height:49px;border-radius:50%;display:grid;place-items:center;background:#e9f6ff;color:#0a2440;font-size:19px;font-weight:900}
+#eurolabSimple .simp-ball.dream{background:#a99afe;color:#191235}
+#eurolabSimple .simp-ball.star{background:#f6d47c;color:#3e2d06}
+#eurolabSimple .simp-plus{color:#a1bad1;font-weight:850;font-size:22px;padding:0 2px}
+#eurolabSimple .simp-smallbutton{border:1px solid #476580;color:#d9ecfc;background:#162c41;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:750;cursor:pointer}
+#eurolabSimple .simp-footer{color:#7e95aa;font-size:12px;line-height:1.65;margin:19px 0 0}
+#eurolabSimple .simp-status{border:1px solid #3a4d64;background:#18263a;border-radius:14px;padding:17px 17px;margin:18px 0}
+#eurolabSimple .simp-status strong{display:block;font-size:21px;color:#d2e7f5;margin-bottom:4px}
+#eurolabSimple .simp-status.good{border-color:#2d8a73;background:#11332c}
+#eurolabSimple .simp-status.good strong{color:#8cf2c8}
+#eurolabSimple .simp-status p{font-size:13px;color:#b1c0ce;margin:6px 0 0;line-height:1.55}
+#eurolabSimple .simp-radarline{display:flex;justify-content:space-between;gap:14px;align-items:center;border-top:1px solid #233c53;padding:14px 0}
+#eurolabSimple .simp-radarline .game{font-size:14px;font-weight:850}
+#eurolabSimple .simp-radarline .secondary{color:#8da8bf;font-size:12px;margin-top:4px}
+#eurolabSimple .simp-radarline .right{text-align:right;font-weight:750;font-size:13px}
+#eurolabSimple .simp-score{display:flex;align-items:baseline;gap:7px;margin:16px 0}
+#eurolabSimple .simp-score strong{font-size:35px;letter-spacing:-.06em}
+#eurolabSimple .simp-score span{color:#a3bdd0;font-size:12px}
+#eurolabSimple .simp-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:10px}
+#eurolabSimple .simp-actions .simp-primary{width:auto;flex:1;min-width:175px;margin-top:0}
+#eurolabSimple .simp-plain{background:none;border:none;color:#86caff;text-decoration:underline;text-underline-offset:3px;font-size:12px;cursor:pointer;padding:4px 0}
+#eurolabSimple .simp-toast{min-height:20px;color:#a7d7ec;font-size:12px;margin-top:9px}
+#eurolabSimple .simp-hidden{display:none!important}
+@media(max-width:450px){#eurolabSimple .simp-segments button{font-size:13px}#eurolabSimple .simp-card{padding:19px}#eurolabSimple .simp-ball{width:42px;height:42px;font-size:17px}#eurolabSimple .simp-head{margin-bottom:27px}#eurolabSimple .simp-radarline{gap:8px}}
