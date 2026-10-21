@@ -1,60 +1,60 @@
 {
   "schema": 1,
-  "asOf": "2026-10-15T11:04:23.260Z",
-  "source": "Jogos Santa Casa — Jogos e Jackpots (15/10/2026)",
-  "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+  "asOf": "2026-10-21T20:25:19+01:00",
+  "source": "Jogos Santa Casa — resultados oficiais de 19 e 20/10/2026 e jackpots anunciados para 22 e 23/10/2026",
+  "sourceUrl": "https://www.jogossantacasa.pt/web/JogarEuromilhoes/",
   "jackpots": {
     "eurodreams": {
       "amount": 50000,
-      "drawDate": "2026-10-15",
-      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
-      "verifiedAt": "2026-10-15T11:04:23.260Z",
-      "kind": "mensal durante 30 anos; campanha especial"
+      "drawDate": "2026-10-22",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/JogarEuromilhoes/",
+      "verifiedAt": "2026-10-21T20:25:19+01:00",
+      "kind": "primeiro prémio anunciado: 50.000 €/mês durante 30 anos; amount corresponde à prestação mensal, não ao total"
     },
     "euromillions": {
-      "amount": 49000000,
-      "drawDate": "2026-10-16",
-      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
-      "verifiedAt": "2026-10-15T11:04:23.260Z",
-      "kind": "jackpot anunciado; montante previsional"
+      "amount": 71000000,
+      "drawDate": "2026-10-23",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/JogarEuromilhoes/",
+      "verifiedAt": "2026-10-21T20:25:19+01:00",
+      "kind": "jackpot previsional anunciado para o sorteio 085/2026 de sexta-feira"
     }
   },
   "draws": [
     {
       "game": "eurodreams",
-      "date": "2026-10-12",
+      "date": "2026-10-19",
       "numbers": [
-        3,
-        4,
-        6,
-        19,
-        30,
-        36
+        1,
+        2,
+        10,
+        15,
+        23,
+        26
       ],
       "special": [
-        2
+        3
       ],
       "official": true,
       "source": "Jogos Santa Casa",
-      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/"
+      "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams"
     },
     {
       "game": "euromillions",
-      "date": "2026-10-13",
+      "date": "2026-10-20",
       "numbers": [
-        21,
-        23,
-        39,
-        44,
-        49
+        9,
+        15,
+        16,
+        37,
+        43
       ],
       "special": [
-        4,
-        11
+        7,
+        10
       ],
       "official": true,
       "source": "Jogos Santa Casa",
-      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/"
+      "sourceUrl": "https://www.jogossantacasa.pt/web/SCCartazResult/euroMilhoes"
     }
   ]
 }
