@@ -1,21 +1,21 @@
 {
   "schema": 1,
-  "asOf": "2026-10-21T20:25:19+01:00",
-  "source": "Jogos Santa Casa — resultados oficiais de 19 e 20/10/2026 e jackpots anunciados para 22 e 23/10/2026",
+  "asOf": "2026-10-22T14:19:24+01:00",
+  "source": "Jogos Santa Casa — resultados oficiais anteriores aos sorteios (EuroDreams 19/10, Euromilhões 20/10) e prémios anunciados para 22 e 23/10/2026; verificados em 22/10/2026",
   "sourceUrl": "https://www.jogossantacasa.pt/web/JogarEuromilhoes/",
   "jackpots": {
     "eurodreams": {
       "amount": 50000,
       "drawDate": "2026-10-22",
       "sourceUrl": "https://www.jogossantacasa.pt/web/JogarEuromilhoes/",
-      "verifiedAt": "2026-10-21T20:25:19+01:00",
+      "verifiedAt": "2026-10-22T14:19:24+01:00",
       "kind": "primeiro prémio anunciado: 50.000 €/mês durante 30 anos; amount corresponde à prestação mensal, não ao total"
     },
     "euromillions": {
       "amount": 71000000,
       "drawDate": "2026-10-23",
       "sourceUrl": "https://www.jogossantacasa.pt/web/JogarEuromilhoes/",
-      "verifiedAt": "2026-10-21T20:25:19+01:00",
+      "verifiedAt": "2026-10-22T14:19:24+01:00",
       "kind": "jackpot previsional anunciado para o sorteio 085/2026 de sexta-feira"
     }
   },
