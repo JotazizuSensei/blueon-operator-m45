@@ -10,14 +10,40 @@ const clamp=(x,min,max)=>Math.min(max,Math.max(min,x));
 const sum=a=>a.reduce((s,n)=>s+n,0);
 function key(l){return `${l.game}|${l.date||l.drawDate||''}|${l.numbers.join(',')}|${l.special.join(',')}`;}
 function valid(game,numbers,special){let g=G[game];return Boolean(g&&allNum(numbers)&&allNum(special)&&numbers.length===g.n&&special.length===g.s&&uniq(numbers).length===g.n&&uniq(special).length===g.s&&numbers.every(x=>x>=1&&x<=g.max)&&special.every(x=>x>=1&&x<=g.smax));}
-function parseOne(v,gameFallback){let game=String(v.game||gameFallback||'').toLowerCase().replace('euromilhoes','euromillions');game=game==='em'?'euromillions':game==='ed'?'eurodreams':game;let date=String(v.date||v.drawDate||'').slice(0,10);let numbers=Array.isArray(v.numbers)?v.numbers:typeof v.numbers==='string'?v.numbers.split(/[\s,;|]+/).filter(Boolean):[];let special=Array.isArray(v.special)?v.special:(Array.isArray(v.extras)?v.extras:(v.stars? v.stars : v.dream?[v.dream]:[]));if(typeof special==='string')special=special.split(/[\s,;|]+/).filter(Boolean);numbers=numbers.map(Number);special=special.map(Number);if(!/^\d{4}-\d\d-\d\d$/.test(date)||!valid(game,numbers,special))return null;return {game,date,numbers:uniq(numbers),special:uniq(special),official:Boolean(v.official),source:v.source||'',jackpot:Number(v.jackpot)||null};}
+function parseOne(v,gameFallback){let game=String(v.game||gameFallback||'').toLowerCase().replace('euromilhoes','euromillions');game=game==='em'?'euromillions':game==='ed'?'eurodreams':game;let date=String(v.date||v.drawDate||'').slice(0,10);let numbers=Array.isArray(v.numbers)?v.numbers:typeof v.numbers==='string'?v.numbers.split(/[\s,;|]+/).filter(Boolean):[];let special=Array.isArray(v.special)?v.special:(Array.isArray(v.extras)?v.extras:(v.stars? v.stars : v.dream?[v.dream]:[]));if(typeof special==='string')special=special.split(/[\s,;|]+/).filter(Boolean);numbers=numbers.map(Number);special=special.map(Number);if(!/^\d{4}-\d\d-\d\d$/.test(date)||!valid(game,numbers,special))return null;let sourceUrl=String(v.sourceUrl||''),verifiedOfficial=v.official===true&&/^https:\/\/(?:[a-z0-9-]+\.)*jogossantacasa\.pt(?:\/|$)/i.test(sourceUrl);return {game,date,numbers:uniq(numbers),special:uniq(special),official:Boolean(v.official),verifiedOfficial,sourceUrl,source:v.source||'',jackpot:Number(v.jackpot)||null};}
 function cleanHistory(arr){let dict=new Map();for(let v of Array.isArray(arr)?arr:[]){let x=parseOne(v);if(x)dict.set(x.game+'|'+x.date,x)}return [...dict.values()].sort((a,b)=>a.date.localeCompare(b.date));}
 function merge(a,b){return cleanHistory([...(a||[]),...(b||[])]);}
 function freq(hist,game,window=Infinity){let g=G[game],h=hist.filter(x=>x.game===game).slice(-window),f=Array(g.max+1).fill(0),last=Array(g.max+1).fill(-1);h.forEach((draw,i)=>draw.numbers.forEach(n=>{f[n]++;last[n]=i}));return {counts:f,absences:last.map(x=>x<0?h.length:h.length-1-x),draws:h.length};}
 function rankPred(hist,game,mode){let g=G[game],d=mode==='long'?freq(hist,game,100):mode==='short'?freq(hist,game,20):freq(hist,game,50);let arr=Array.from({length:g.max},(_,i)=>i+1);return arr.sort((a,b)=>mode==='absence'?(d.absences[b]-d.absences[a]||a-b):(d.counts[b]-d.counts[a]||a-b)).slice(0,g.n);}
 function evalFold(hist,game,start,end,mode){let g=G[game],hits=0,expected=0,sqs=0,observed=0;for(let i=start;i<end;i++){let past=hist.slice(0,i),pick=rankPred(past,game,mode),draw=hist[i];let hit=pick.filter(n=>draw.numbers.includes(n)).length;hits+=hit;expected+=g.n*g.n/g.max;sqs+=g.n*(g.n/g.max)*(1-g.n/g.max)*(g.max-g.n)/(g.max-1);observed++;}return {trials:observed,hits,expected,z:sqs>0?(hits-expected)/Math.sqrt(sqs):0};}
-function walkForward(history,game){let hist=history.filter(x=>x.game===game).sort((a,b)=>a.date.localeCompare(b.date)),count=hist.length;let minTrain=100;if(count<minTrain+80)return {ready:false,draws:count,minRequired:minTrain+80,validated:false,method:'Nenhum',folds:[],note:'Histórico insuficiente para validação fora da amostra.'};let start=Math.max(minTrain, count-180),mid=start+Math.floor((count-start)/2),modes=['long','short','absence'];let tests=modes.map(mode=>{let left=evalFold(hist,game,start,mid,mode),right=evalFold(hist,game,mid,count,mode);let combined=evalFold(hist,game,start,count,mode);return {mode,left,right,combined};});let best=tests.slice().sort((a,b)=>b.combined.z-a.combined.z)[0];/* Threshold intencionalmente conservador: ~bonferroni 3 modelos e duas metades. */let replicated=best.left.z>2.3&&best.right.z>2.3&&best.combined.z>3.7;
-return {ready:true,draws:count,minRequired:minTrain+80,validated:replicated,method:best.mode,folds:tests,scoreZ:best.combined.z,splitZ:[best.left.z,best.right.z],note:replicated?'Sinal exploratório replicado nas duas metades; requer avaliação independente adicional.':'Nenhum dos modelos pré-definidos apresentou replicação temporal convincente.'};}
+/* Método definido antes do teste: seleção dos 3 modelos nos dados iniciais,
+   seguida por 100 sorteios de validação SEM escolher de novo o vencedor.
+   Uma série de verificações recorrentes requer ainda auditoria prospectiva independente. */
+function walkForward(history,game){
+ const hist=history.filter(x=>x.game===game).sort((a,b)=>a.date.localeCompare(b.date));
+ const count=hist.length,minRequired=280;
+ const vetted=hist.every(x=>x.verifiedOfficial===true),verifiedCount=hist.filter(x=>x.verifiedOfficial===true).length;
+ if(count<minRequired)return{ready:false,draws:count,verifiedCount,minRequired,validated:false,independentValidated:false,method:'Nenhum',folds:[],note:'Histórico insuficiente para seleção de modelo e 100 sorteios reservados para validação.'};
+ const cutoff=count-100,mid=cutoff+50;
+ const modes=['long','short','absence'];
+ const discovery=modes.map(mode=>({mode,discovery:evalFold(hist,game,100,cutoff,mode)}));
+ const best=discovery.slice().sort((a,b)=>b.discovery.z-a.discovery.z)[0];
+ const left=evalFold(hist,game,cutoff,mid,best.mode),
+       right=evalFold(hist,game,mid,count,best.mode),
+       combined=evalFold(hist,game,cutoff,count,best.mode);
+ const evidence=best.discovery.z>2.0&&left.z>2.6&&right.z>2.6&&combined.z>4.5;
+ const independentValidated=evidence&&vetted;
+ return{
+  ready:true,draws:count,verifiedCount,minRequired,vetted,
+  method:best.mode,folds:discovery,scoreZ:combined.z,
+  splitZ:[left.z,right.z],
+  exploratoryReplicated:evidence,
+  independentValidated,validated:independentValidated,
+  note:!vetted?'Histórico com entradas sem proveniência oficial verificada. Não recomendar.'
+       :independentValidated?'Desvio forte num teste separado; exige confirmação prospetiva e auditoria do mecanismo.':
+       'Sem sinal estatístico reproduzido com força suficiente na validação isolada.'
+ };
+}
 function nextDate(game,today){let g=G[game],base=String(today).slice(0,10),d=new Date(base+'T12:00:00Z');for(let i=0;i<9;i++){let x=new Date(d);x.setUTCDate(x.getUTCDate()+i);if(g.days.includes(x.getUTCDay()))return x.toISOString().slice(0,10)}return null;}
 function simpleNum(date){return String(date||'').replace(/\D/g,'').split('').reduce((s,x)=>s+Number(x),0)%9||9;}
 function symbolic(line,date){let n=line.numbers,s=line.special,hit=[8,29,5,11,7,1].filter(x=>n.includes(x)).length,personal=clamp(hit*1.6,0,8),dream=n.includes(simpleNum(date))?3:0,star=s.includes(5)?2:0,friday=new Date(date+'T12:00:00Z').getUTCDay()===5?1.2:0;
@@ -33,7 +59,7 @@ function empParts(backtest,line,history){let good=backtest.validated===true, n=h
  'Frequência / ausência':good?3:0,
  'Contexto operacional':0
  };}
-function score(line,date,backtest,history){let parts=empParts(backtest,line,history),emp=sum(Object.values(parts)),sym=symbolic(line,date),uni=uniqueness(line);let stable=backtest.validated?0.87:0.75,raw=emp+sym+uni,total=Math.floor(raw*stable*10)/10;return {emp:Math.round(emp*10)/10,sym:Math.round(sym*10)/10,uni:Math.round(uni*10)/10,parts,stable,raw:Math.round(raw*10)/10,total,validated:backtest.validated===true,gate:total>=70&&backtest.validated===true};}
+function score(line,date,backtest,history){let parts=empParts(backtest,line,history),emp=sum(Object.values(parts)),sym=symbolic(line,date),uni=uniqueness(line);let stable=backtest.independentValidated===true?0.87:0.75,raw=emp+sym+uni,total=Math.floor(raw*stable*10)/10;return {emp:Math.round(emp*10)/10,sym:Math.round(sym*10)/10,uni:Math.round(uni*10)/10,parts,stable,raw:Math.round(raw*10)/10,total,validated:backtest.independentValidated===true,gate:total>=70&&backtest.independentValidated===true};}
 function rand(max){let a=new Uint32Array(1);if(typeof crypto!=='undefined'&&crypto.getRandomValues){crypto.getRandomValues(a);return a[0]%max+1;}return Math.floor(Math.random()*max)+1;}
 function sample(game){let g=G[game],n=new Set(),s=new Set();while(n.size<g.n)n.add(rand(g.max));while(s.size<g.s)s.add(rand(g.smax));return {game,numbers:uniq([...n]),special:uniq([...s])};}
 function grade(line,date,backtest,history){return score(line,date,backtest,history);}
