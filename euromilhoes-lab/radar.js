@@ -3,7 +3,7 @@
  */
 (function(){'use strict';
 const Engine=window.EuroRadarEngine;if(!Engine)return;
-const K='eurolab.radar.v6',V='6.1.0';
+const K='eurolab.radar.v6',V='6.2.0';
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const EUR=n=>new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n||0);
 const fmt=n=>new Intl.NumberFormat('pt-PT').format(n||0);
@@ -25,8 +25,19 @@ return `<div class="radar-grid"><article class="card"><div class="row"><h3 style
 function log(text,category='sistema'){let id=Date.now()+'_'+Math.random().toString(36).slice(2,7);R.logs.unshift({id,time:new Date().toISOString(),text,category});R.logs=R.logs.slice(0,70);store();}
 async function notify(title,body,id){if(R.notified[id])return;R.notified[id]=new Date().toISOString();store();log(title+' — '+body,'alerta');if(typeof Notification==='undefined'||Notification.permission!=='granted')return;try{if('serviceWorker' in navigator&&location.protocol.startsWith('http')){let registration=await navigator.serviceWorker.getRegistration();if(registration){await registration.showNotification(title,{body,tag:id,icon:'icon.svg',badge:'icon.svg',data:{url:location.href}});return;}}new Notification(title,{body,tag:id});}catch(err){console.warn('Notificação indisponível',err);}}
 async function askNotifications(){if(!('Notification'in window)){alert('Este navegador não suporta notificações.');return;}let p=await Notification.requestPermission();log('Permissão de notificações: '+p);render();}
-function prizeThreshold(){let j=R.jackpots.euromillions;if(!j||!R.prefs.notifyJackpot)return;let m=Number(j.amount)/1e6;if(!Number.isFinite(m)||m<R.prefs.jackpotFloor)return;let verified=j.sourceUrl&&/^https:\/\//.test(j.sourceUrl)&&j.verifiedAt&&!Number.isNaN(new Date(j.verifiedAt).getTime())&&Date.now()-new Date(j.verifiedAt).getTime()<96*3600*1000;if(!verified)return;let key=`jackpot-${j.drawDate||'data'}-${Math.floor(m/10)*10}`;notify('EuroLab · jackpot Euromilhões',`${m.toFixed(0)} M€ publicados para ${j.drawDate||'próximo sorteio'}. É um alerta de prémio, não de chave vencedora.`,key);}
-function radarAlert(a){if(!a?.score?.gate||!R.prefs.notifyRadar)return;let key=`radar-${a.game}-${a.date}-${a.line.numbers.join('-')}-${a.line.special.join('-')}`;notify('EuroLab · RADAR elevado',`RADAR ${a.score.total.toFixed(1)}/100. Verificar dados e estudos antes de decidir; não garante prémio.`,key);}
+/* Alertas de jackpot desativados por pedido explícito: só um sinal de chave testado pode avisar. */
+function prizeThreshold(){return;}
+function radarAlert(a){
+  if(!a||!R.prefs.notifyRadar||!a.score?.gate||!a.score?.validated||
+     a.backtest?.independentValidated!==true||!(a.score.total>=70)||
+     !Engine.valid(a.game,a.line?.numbers,a.line?.special))return;
+  /* Não notificar depois das 15h em Lisboa; o utilizador precisa de tempo para apostar. */
+  let h=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Lisbon',hour:'2-digit',hourCycle:'h23'}).format(new Date()));
+  if(h>=15||a.date<localDay())return;
+  const key='radar-verified-'+a.game+'-'+a.date+'-'+a.line.numbers.join('-')+'-'+a.line.special.join('-');
+  const label=Engine.G[a.game]?.name||a.game;
+  notify('EuroLab · SINAL DE CHAVE VALIDADO',label+' · '+a.date+' · '+a.line.numbers.join(' ')+' + '+a.line.special.join(' ')+' · RADAR '+a.score.total.toFixed(1)+'/100. Não garante prémio.',key);
+}
 function logs(){return R.logs.length?R.logs.slice(0,15).map(l=>`<div class="radar-log-item"><b>${esc(new Date(l.time).toLocaleString('pt-PT'))}</b> · ${esc(l.category)}<div class="radar-muted">${esc(l.text)}</div></div>`).join(''):'<p class="radar-muted">Ainda sem alertas registados.</p>';}
 function status(){let hist=history(),d=localDay();return `<div class="radar-compact"><div><strong>SUPER RADAR · ${analysis?.score?.gate?'Revisão necessária':'NÃO JOGAR'}</strong><small>EuroDreams prioritário · Euromilhões a partir de ${R.prefs.jackpotFloor} M€ · ${hist.length} sorteios guardados</small></div><button data-open-radar="1">Abrir SUPER RADAR</button></div>`;}
 function feedStatus(){let f=R.feed;return f?`Última leitura: ${esc(f.readAt)} · ${esc(f.source||'Origem não indicada')} · ${esc(f.status||'guardado')}`:'Ainda não foi lido um feed de prémios e resultados. Os ficheiros locais NÃO confirmam um jackpot atual.';}
@@ -39,7 +50,7 @@ async function analyze(){if(analyzing)return;analyzing=true;render();try{let his
 let dreams=choices.find(a=>a.game==='eurodreams'),million=choices.find(a=>a.game==='euromillions');analysis=milllionPreferred(million,dreams)?million:dreams;
 R.last={...analysis,updatedAt:new Date().toISOString()};R.last.score=analysis.score;store();log(`Análise concluída: ${Engine.G[analysis.game].name}; ${analysis.score.total.toFixed(1)}/100; ${analysis.score.gate?'revisão necessária':'não jogar'}.`,'análise');radarAlert(analysis);
 }catch(err){log('Erro na análise: '+err.message,'erro');alert('Não foi possível executar a análise: '+err.message);}finally{analyzing=false;render();}}
-function milllionPreferred(em,ed){let j=R.jackpots.euromillions,eligible=j?.amount>=R.prefs.jackpotFloor*1e6;return Boolean(eligible&&em?.score?.gate&&em.score.total>ed.score.total+5);}
+function milllionPreferred(em,ed){return Boolean(em?.score?.gate&&em?.backtest?.independentValidated===true&&em.score.total>ed.score.total+5);}
 function csv(text){let lines=text.trim().replace(/^\uFEFF/,'').split(/\r?\n/);if(lines.length<2)return[];let head=lines.shift().split(',').map(x=>x.trim().toLowerCase()),get=(cols,n)=>cols[head.indexOf(n)]||'';return lines.map(line=>{let cols=line.split(',');return{game:get(cols,'game'),date:get(cols,'date'),numbers:get(cols,'numbers'),special:get(cols,'special'),official:false};});}
 async function importFile(file){if(!file)return;try{let text=await file.text(),raw=file.name.toLowerCase().endsWith('.csv')?csv(text):JSON.parse(text),rows=Array.isArray(raw)?raw:raw.draws||raw.results||raw.history||[];let clean=Engine.cleanHistory(rows);if(!clean.length)throw Error('Sem sorteios válidos.');R.history=Engine.merge(R.history,clean);R.last=null;analysis=null;store();log(`${clean.length} sorteios válidos importados de ${file.name}. Fonte não certificada.`,'dados');render();}catch(err){alert('Erro na importação: '+err.message);}}
 function backup(){let blob=new Blob([JSON.stringify({version:V,exportedAt:new Date().toISOString(),radar:R},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='EuroLab-SUPER-RADAR-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);}
