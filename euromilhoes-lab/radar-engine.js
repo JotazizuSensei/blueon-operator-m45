@@ -20,9 +20,10 @@ function evalFold(hist,game,start,end,mode){let g=G[game],hits=0,expected=0,sqs=
    seguida por 100 sorteios de validação SEM escolher de novo o vencedor.
    Uma série de verificações recorrentes requer ainda auditoria prospectiva independente. */
 function walkForward(history,game){
- const hist=history.filter(x=>x.game===game).sort((a,b)=>a.date.localeCompare(b.date));
+ const all=history.filter(x=>x.game===game).sort((a,b)=>a.date.localeCompare(b.date));
+ const hist=all.filter(x=>x.verifiedOfficial===true);
  const count=hist.length,minRequired=280;
- const vetted=hist.every(x=>x.verifiedOfficial===true),verifiedCount=hist.filter(x=>x.verifiedOfficial===true).length;
+ const vetted=true,verifiedCount=count,unverifiedIgnored=all.length-count;
  if(count<minRequired)return{ready:false,draws:count,verifiedCount,minRequired,validated:false,independentValidated:false,method:'Nenhum',folds:[],note:'Histórico insuficiente para seleção de modelo e 100 sorteios reservados para validação.'};
  const cutoff=count-100,mid=cutoff+50;
  const modes=['long','short','absence'];
@@ -34,7 +35,7 @@ function walkForward(history,game){
  const evidence=best.discovery.z>2.0&&left.z>2.6&&right.z>2.6&&combined.z>4.5;
  const independentValidated=evidence&&vetted;
  return{
-  ready:true,draws:count,verifiedCount,minRequired,vetted,
+  ready:true,draws:count,verifiedCount,minRequired,unverifiedIgnored,vetted,
   method:best.mode,folds:discovery,scoreZ:combined.z,
   splitZ:[left.z,right.z],
   exploratoryReplicated:evidence,
