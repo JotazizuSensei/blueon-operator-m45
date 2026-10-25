@@ -1,22 +1,22 @@
 {
   "schema": 1,
-  "asOf": "2026-10-24T14:34:04+01:00",
-  "source": "Jogos Santa Casa — resultados oficiais conhecidos até 24/10/2026; prémios anunciados para EuroDreams 26/10 e Euromilhões 27/10, verificados em 24/10/2026; sem qualquer inferência preditiva",
-  "sourceUrl": "https://www.jogossantacasa.pt/",
+  "asOf": "2026-10-25T14:14:00+00:00",
+  "source": "Jogos Santa Casa — resultados oficiais de EuroDreams até 22/10/2026 e Euromilhões até 23/10/2026; prémios anunciados para 26/10 e 27/10 confirmados em 25/10/2026; sem validação de vantagem preditiva",
+  "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
   "jackpots": {
     "eurodreams": {
       "amount": 50000,
       "drawDate": "2026-10-26",
-      "sourceUrl": "https://www.jogossantacasa.pt/",
-      "verifiedAt": "2026-10-24T14:34:04+01:00",
-      "kind": "1.º prémio anunciado: 50.000 €/mês durante 30 anos; amount é a prestação mensal"
+      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+      "verifiedAt": "2026-10-25T14:14:00+00:00",
+      "kind": "1.º prémio anunciado: 50.000 €/mês durante 30 anos; amount representa prestação mensal"
     },
     "euromillions": {
       "amount": 79000000,
       "drawDate": "2026-10-27",
-      "sourceUrl": "https://www.jogossantacasa.pt/",
-      "verifiedAt": "2026-10-24T14:34:04+01:00",
-      "kind": "Jackpot anunciado para terça-feira, 27/10/2026; valor previsional, não garantido"
+      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+      "verifiedAt": "2026-10-25T14:14:00+00:00",
+      "kind": "Jackpot previsional anunciado para 27/10/2026; não representa probabilidade acrescida"
     }
   },
   "draws": [
