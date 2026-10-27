@@ -1,22 +1,22 @@
 {
   "schema": 1,
-  "asOf": "2026-10-26T14:30:01+00:00",
-  "source": "Jogos Santa Casa — prémios para EuroDreams 26/10/2026 e Euromilhões 27/10/2026 e últimos resultados oficiais (EuroDreams 22/10 e Euromilhões 23/10), verificados em 26/10/2026 antes dos sorteios; sem validação de vantagem preditiva",
+  "asOf": "2026-10-27T14:07:25.414Z",
+  "source": "Jogos Santa Casa — próximos sorteios e prémios anunciados para 27/10/2026 (Euromilhões) e 29/10/2026 (EuroDreams); últimos resultados oficiais verificados em 27/10/2026 antes do sorteio de Euromilhões; sem evidência validada de vantagem preditiva",
   "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
   "jackpots": {
     "eurodreams": {
       "amount": 50000,
-      "drawDate": "2026-10-26",
+      "drawDate": "2026-10-29",
       "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
-      "verifiedAt": "2026-10-26T14:30:01+00:00",
+      "verifiedAt": "2026-10-27T14:07:25.414Z",
       "kind": "1.º prémio anunciado: 50.000 €/mês durante 30 anos; amount representa prestação mensal"
     },
     "euromillions": {
       "amount": 79000000,
       "drawDate": "2026-10-27",
       "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
-      "verifiedAt": "2026-10-26T14:30:01+00:00",
-      "kind": "Jackpot previsional anunciado para 27/10/2026; não representa probabilidade acrescida"
+      "verifiedAt": "2026-10-27T14:07:25.414Z",
+      "kind": "Jackpot previsional de 79 milhões € anunciado pela Santa Casa para 27/10/2026; não representa vantagem preditiva"
     }
   },
   "draws": [
@@ -91,6 +91,24 @@
       "official": true,
       "source": "Jogos Santa Casa",
       "sourceUrl": "https://www.jogossantacasa.pt/web/SCCartazResult/euroMilhoes"
+    },
+    {
+      "game": "eurodreams",
+      "date": "2026-10-26",
+      "numbers": [
+        3,
+        19,
+        21,
+        26,
+        35,
+        38
+      ],
+      "special": [
+        3
+      ],
+      "official": true,
+      "source": "Jogos Santa Casa",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams"
     }
   ]
 }
