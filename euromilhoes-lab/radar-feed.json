@@ -1,22 +1,22 @@
 {
   "schema": 1,
-  "asOf": "2026-10-30T14:34:21.523Z",
-  "source": "Jogos Santa Casa — sorteios oficiais EuroDreams até 29/10/2026 e Euromilhões até 27/10/2026. Próximos sorteios: EuroDreams 02/11/2026 (50.000 €/mês durante 30 anos) e Euromilhões 30/10/2026 (jackpot previsional 89.000.000 €). Sem vantagem preditiva validada.",
-  "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar",
+  "asOf": "2026-11-01T14:05:50Z",
+  "source": "Jogos Santa Casa — resultados oficiais EuroDreams até 29/10/2026 e Euromilhões até 30/10/2026; prémios anunciados para 02/11/2026 e 03/11/2026. Sem vantagem preditiva validada.",
+  "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
   "jackpots": {
     "eurodreams": {
       "amount": 50000,
       "drawDate": "2026-11-02",
       "sourceUrl": "https://www.jogossantacasa.pt/web/JogarEuroDreams/",
-      "verifiedAt": "2026-10-30T14:34:21.523Z",
-      "kind": "1.º prémio anunciado: 50.000 euros por mês durante 30 anos. amount é prestação mensal, não montante total."
+      "verifiedAt": "2026-11-01T14:05:50Z",
+      "kind": "1.º prémio anunciado: 50.000 euros por mês durante 30 anos; amount representa a prestação mensal."
     },
     "euromillions": {
-      "amount": 89000000,
-      "drawDate": "2026-10-30",
-      "sourceUrl": "https://www.jogossantacasa.pt/web/SCCartazResult/euroMilhoes",
-      "verifiedAt": "2026-10-30T14:34:21.523Z",
-      "kind": "Jackpot previsional do 1.º prémio, 89 milhões de euros. Não é sinal preditivo."
+      "amount": 98000000,
+      "drawDate": "2026-11-03",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+      "verifiedAt": "2026-11-01T14:05:50Z",
+      "kind": "Jackpot previsional do 1.º prémio, 98 milhões de euros; não é sinal preditivo."
     }
   },
   "draws": [
@@ -145,6 +145,24 @@
       "official": true,
       "source": "Jogos Santa Casa",
       "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams"
+    },
+    {
+      "game": "euromillions",
+      "date": "2026-10-30",
+      "numbers": [
+        3,
+        12,
+        14,
+        17,
+        37
+      ],
+      "special": [
+        3,
+        12
+      ],
+      "official": true,
+      "source": "Jogos Santa Casa",
+      "sourceUrl": "https://diadopai.jogossantacasa.pt/web/ResultsBoard/euromilhoes"
     }
   ]
 }
