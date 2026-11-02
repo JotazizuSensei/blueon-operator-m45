@@ -1,21 +1,21 @@
 {
   "schema": 1,
-  "asOf": "2026-11-01T14:05:50Z",
-  "source": "Jogos Santa Casa — resultados oficiais EuroDreams até 29/10/2026 e Euromilhões até 30/10/2026; prémios anunciados para 02/11/2026 e 03/11/2026. Sem vantagem preditiva validada.",
+  "asOf": "2026-11-02T14:29:48Z",
+  "source": "Jogos Santa Casa — resultados oficiais até EuroDreams 29/10/2026 e Euromilhões 30/10/2026; próximos sorteios 02/11/2026 e 03/11/2026. Sem vantagem preditiva validada.",
   "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
   "jackpots": {
     "eurodreams": {
       "amount": 50000,
       "drawDate": "2026-11-02",
       "sourceUrl": "https://www.jogossantacasa.pt/web/JogarEuroDreams/",
-      "verifiedAt": "2026-11-01T14:05:50Z",
+      "verifiedAt": "2026-11-02T14:29:48Z",
       "kind": "1.º prémio anunciado: 50.000 euros por mês durante 30 anos; amount representa a prestação mensal."
     },
     "euromillions": {
       "amount": 98000000,
       "drawDate": "2026-11-03",
       "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
-      "verifiedAt": "2026-11-01T14:05:50Z",
+      "verifiedAt": "2026-11-02T14:29:48Z",
       "kind": "Jackpot previsional do 1.º prémio, 98 milhões de euros; não é sinal preditivo."
     }
   },
