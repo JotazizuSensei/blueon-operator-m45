@@ -1,19 +1,19 @@
 {
-  "date": "2026-10-30",
+  "date": "2026-11-03",
   "numbers": [
-    3,
-    12,
-    14,
-    17,
-    37
+    13,
+    23,
+    38,
+    39,
+    48
   ],
   "source": "Jogos Santa Casa — resultado oficial",
   "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/euromilhoes",
   "official": true,
   "stars": [
-    3,
-    12
+    5,
+    8
   ],
   "m1": "",
-  "updatedAt": "2026-11-03T15:09:53.338911+00:00"
+  "updatedAt": "2026-11-03T23:55:45.430405+00:00"
 }
