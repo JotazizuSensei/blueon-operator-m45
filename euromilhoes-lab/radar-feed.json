@@ -1,22 +1,22 @@
 {
   "schema": 1,
-  "asOf": "2026-11-03T14:01:25Z",
-  "source": "Jogos Santa Casa — resultados oficiais até EuroDreams 02/11/2026 e Euromilhões 30/10/2026; próximos sorteios EuroDreams 05/11/2026 e Euromilhões 03/11/2026. Sem vantagem preditiva validada.",
+  "asOf": "2026-11-04T14:12:00Z",
+  "source": "Jogos Santa Casa — resultados oficiais até EuroDreams 02/11/2026 e Euromilhões 03/11/2026; próximos sorteios EuroDreams 05/11/2026 e Euromilhões 06/11/2026. Sem vantagem preditiva validada.",
   "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
   "jackpots": {
     "eurodreams": {
       "amount": 50000,
       "drawDate": "2026-11-05",
       "sourceUrl": "https://www.jogossantacasa.pt/web/JogarEuroDreams/",
-      "verifiedAt": "2026-11-03T14:01:25Z",
+      "verifiedAt": "2026-11-04T14:12:00Z",
       "kind": "1.º prémio anunciado: 50.000 euros por mês durante 30 anos; amount representa a prestação mensal."
     },
     "euromillions": {
-      "amount": 98000000,
-      "drawDate": "2026-11-03",
-      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
-      "verifiedAt": "2026-11-03T14:01:25Z",
-      "kind": "Jackpot previsional do 1.º prémio, 98 milhões de euros; não é sinal preditivo."
+      "amount": 130000000,
+      "drawDate": "2026-11-06",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/euromilhoes",
+      "verifiedAt": "2026-11-04T14:12:00Z",
+      "kind": "Jackpot previsional para o próximo sorteio, indicado na nota (1) do resultado oficial de 03/11/2026; não é sinal preditivo."
     }
   },
   "draws": [
@@ -181,6 +181,24 @@
       "official": true,
       "source": "Jogos Santa Casa",
       "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams"
+    },
+    {
+      "game": "euromillions",
+      "date": "2026-11-03",
+      "numbers": [
+        13,
+        23,
+        38,
+        39,
+        48
+      ],
+      "special": [
+        5,
+        8
+      ],
+      "official": true,
+      "source": "Jogos Santa Casa",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/euromilhoes"
     }
   ]
 }
