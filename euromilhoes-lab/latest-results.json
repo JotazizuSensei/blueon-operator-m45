@@ -1,16 +1,16 @@
 {
   "em": {
-    "date": "2026-11-03",
+    "date": "2026-11-06",
     "numbers": [
+      7,
       13,
-      23,
-      38,
-      39,
-      48
+      37,
+      47,
+      49
     ],
     "extras": [
-      5,
-      8
+      7,
+      11
     ],
     "source": "Jogos Santa Casa — resultado oficial",
     "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/euromilhoes",
@@ -40,5 +40,5 @@
     "sourceUrl": "https://www.jogossantacasa.pt/web/SCCartazResult/m1lhao",
     "official": true
   },
-  "updatedAt": "2026-11-06T15:04:19.933477+00:00"
+  "updatedAt": "2026-11-06T23:41:45.545743+00:00"
 }
