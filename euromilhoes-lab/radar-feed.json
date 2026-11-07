@@ -1,22 +1,22 @@
 {
   "schema": 1,
-  "asOf": "2026-11-06T13:52:00Z",
-  "source": "Jogos Santa Casa — resultados oficiais até EuroDreams 05/11/2026 e Euromilhões 03/11/2026. Sem vantagem preditiva validada.",
+  "asOf": "2026-11-07T14:13:55Z",
+  "source": "Jogos Santa Casa — resultados oficiais até EuroDreams 05/11/2026 e Euromilhões 06/11/2026. Sem vantagem preditiva validada.",
   "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
   "jackpots": {
     "eurodreams": {
       "amount": null,
       "drawDate": "2026-11-09",
-      "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams",
-      "verifiedAt": null,
-      "kind": "Prémio anunciado para 09/11 ainda não confirmado nesta verificação."
+      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+      "verifiedAt": "2026-11-07T14:13:55Z",
+      "kind": "Primeiro prémio anunciado: 50.000 EUR/mês durante 30 anos; valor mensal não representado em amount para evitar confusão de unidades."
     },
     "euromillions": {
-      "amount": 130000000,
-      "drawDate": "2026-11-06",
-      "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/euromilhoes",
-      "verifiedAt": "2026-11-06T13:52:00Z",
-      "kind": "Jackpot previsional para o próximo sorteio, indicado na nota (1) do resultado oficial de 03/11/2026; não é sinal preditivo."
+      "amount": 141000000,
+      "drawDate": "2026-11-10",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+      "verifiedAt": "2026-11-07T14:13:55Z",
+      "kind": "Jackpot previsional oficial para 10/11/2026; não constitui sinal preditivo."
     }
   },
   "draws": [
@@ -217,6 +217,24 @@
       "official": true,
       "source": "Jogos Santa Casa",
       "sourceUrl": "https://www.jogossantacasa.pt/web/ResultsBoard/EuroDreams"
+    },
+    {
+      "game": "euromillions",
+      "date": "2026-11-06",
+      "numbers": [
+        7,
+        13,
+        37,
+        47,
+        49
+      ],
+      "special": [
+        7,
+        11
+      ],
+      "official": true,
+      "source": "Jogos Santa Casa",
+      "sourceUrl": "https://www.jogossantacasa.pt/web/SCCartazResult/euroMilhoes"
     }
   ]
 }
