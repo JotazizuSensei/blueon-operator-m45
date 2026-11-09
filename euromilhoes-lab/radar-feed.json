@@ -1,22 +1,22 @@
 {
   "schema": 1,
-  "asOf": "2026-11-07T14:13:55Z",
-  "source": "Jogos Santa Casa — resultados oficiais até EuroDreams 05/11/2026 e Euromilhões 06/11/2026. Sem vantagem preditiva validada.",
-  "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+  "asOf": "2026-11-09T14:38:56Z",
+  "source": "Jogos Santa Casa — resultados oficiais disponíveis até EuroDreams 05/11/2026 e Euromilhões 06/11/2026; sorteio EuroDreams 09/11/2026 confirmado em jogo até às 19h00. Sem vantagem preditiva empiricamente validada.",
+  "sourceUrl": "https://www.jogossantacasa.pt/web/JogarRapido/EuroDreams",
   "jackpots": {
     "eurodreams": {
       "amount": null,
       "drawDate": "2026-11-09",
-      "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
+      "sourceUrl": "https://www.jogossantacasa.pt/html/QRCodeJSC/landings/LP-eurodreams.html",
       "verifiedAt": "2026-11-07T14:13:55Z",
-      "kind": "Primeiro prémio anunciado: 50.000 EUR/mês durante 30 anos; valor mensal não representado em amount para evitar confusão de unidades."
+      "kind": "Prémio de primeira categoria previsto nas regras oficiais; montante promocional atual não confirmado nesta verificação."
     },
     "euromillions": {
-      "amount": 141000000,
+      "amount": null,
       "drawDate": "2026-11-10",
       "sourceUrl": "https://www.jogossantacasa.pt/web/Jogar/",
-      "verifiedAt": "2026-11-07T14:13:55Z",
-      "kind": "Jackpot previsional oficial para 10/11/2026; não constitui sinal preditivo."
+      "verifiedAt": null,
+      "kind": "Jackpot atual não confirmado nesta verificação; valor anterior não transportado como atual."
     }
   },
   "draws": [
