@@ -17,14 +17,14 @@
     "official": true
   },
   "ed": {
-    "date": "2026-11-16",
+    "date": "2026-11-19",
     "numbers": [
-      2,
-      4,
-      11,
-      14,
-      17,
-      18
+      5,
+      8,
+      18,
+      24,
+      27,
+      39
     ],
     "extras": [
       2
@@ -40,5 +40,5 @@
     "sourceUrl": "https://www.jogossantacasa.pt/web/SCCartazResult/m1lhao",
     "official": true
   },
-  "updatedAt": "2026-11-18T16:27:49.001341+00:00"
+  "updatedAt": "2026-11-20T01:09:20.316066+00:00"
 }
